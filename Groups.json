@@ -1,0 +1,38 @@
+[
+ { "GroupName": "BYOD-Good-Mobile Device-Users-Enabled",
+   "Desc": "This group is used to apply Good configuration policies to users' mobile devices and place the appropriate configuration controls onto the user's mobile device"
+ },
+ { "GroupName": "BYOD-Good-PC-Users-Enabled",
+   "Desc": "This group is used to apply Good configuration policies to users' PC or Mac devices and place the appropriate configuration controls onto the user's mobile device"
+ },
+ { "GroupName": "BYOD-Good-Exclude Mobile Device-Users",
+   "Desc": "This group is used to exclude Good configuration policies being applied to users' mobile devices. This might be because they have a corporately issued mobile device but not a laptop device."
+ },
+ { "GroupName": "BYOD-Good-Exclude PC-Users",
+   "Desc": "This group is used to exclude Good configuration policies being applied to users' PC or Mac devices. This might be because they have a laptop device but not a mobile device."
+ },
+ { "GroupName": "BYOD-Better-Mobile Device-Users-Enabled",
+   "Desc": "This group is used to apply Better configuration policies to users' mobile devices and place the appropriate configuration controls onto the user's mobile device"
+ },
+ { "GroupName": "BYOD-Better-PC-Users-Enabled",
+   "Desc": "This group is used to apply Better configuration policies to users' PC or Mac devices and place the appropriate configuration controls onto the user's mobile device."
+ },
+ { "GroupName": "BYOD-Better-Exclude-Mobile Device-Users",
+   "Desc": "This group is used to exclude Better configuration policies being applied to users' mobile devices. This might be because they have a corporately issued mobile device but not a laptop device."
+ },
+ { "GroupName": "BYOD-Better-Exclude PC-Users",
+   "Desc": "This group is used to exclude Better configuration policies being applied to users' PC or Mac devices. This might be because they have a laptop device but not a mobile device."
+ },
+ { "GroupName": "BYOD-Best-Mobile Device-Users-Enabled",
+   "Desc": "This group is used to apply Best configuration policies to users' mobile devices and place the appropriate configuration controls onto the user's mobile device"
+ },
+ { "GroupName": "BYOD-Best-PC-Users-Enabled ",
+   "Desc": "This group is used to apply Best configuration policies to users' PC or Mac devices and place the appropriate configuration controls onto the user's mobile device"
+ },
+ { "GroupName": "BYOD-Best-Exclude Mobile Device-Users",
+   "Desc": "This group is used to exclude Best configuration policies being applied to users' mobile devices. This might be because they have a corporately issued mobile device but not a laptop device."
+ },
+ { "GroupName": "BYOD-Best-Exclude PC-Users",
+   "Desc": "This group is used to exclude Best configuration policies being applied to users' PC or Mac devices. This might be because they have a laptop device but not a mobile device."
+ }
+]
