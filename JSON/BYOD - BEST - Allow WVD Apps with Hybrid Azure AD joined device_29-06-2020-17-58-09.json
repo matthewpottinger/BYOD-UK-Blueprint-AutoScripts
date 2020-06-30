@@ -1,0 +1,83 @@
+{
+    "id":  "92580593-389c-4633-a667-31de866dae15",
+    "displayName":  "BYOD - BEST - Allow WVD Apps with Hybrid Azure AD joined device",
+    "createdDateTime":  null,
+    "modifiedDateTime":  "2020-05-28T17:47:17.4470246Z",
+    "state":  "enabled",
+    "conditions":  {
+                       "userRiskLevels":  [
+
+                                          ],
+                       "signInRiskLevels":  [
+
+                                            ],
+                       "clientAppTypes":  [
+                                              "mobileAppsAndDesktopClients"
+                                          ],
+                       "locations":  null,
+                       "deviceStates":  null,
+                       "devices":  null,
+                       "applications":  {
+                                            "includeApplications":  [
+                                                                        "Office365"
+                                                                    ],
+                                            "excludeApplications":  [
+
+                                                                    ],
+                                            "includeUserActions":  [
+
+                                                                   ]
+                                        },
+                       "users":  {
+                                     "includeUsers":  [
+
+                                                      ],
+                                     "excludeUsers":  [
+
+                                                      ],
+                                     "includeGroups":  [
+                                                           "2b7b05be-47c1-4d1a-9583-186bd789cedb"
+                                                       ],
+                                     "excludeGroups":  [
+
+                                                       ],
+                                     "includeRoles":  [
+
+                                                      ],
+                                     "excludeRoles":  [
+
+                                                      ]
+                                 },
+                       "platforms":  {
+                                         "includePlatforms":  [
+                                                                  "all"
+                                                              ],
+                                         "excludePlatforms":  [
+                                                                  "android",
+                                                                  "iOS"
+                                                              ]
+                                     }
+                   },
+    "grantControls":  {
+                          "operator":  "OR",
+                          "builtInControls":  [
+                                                  "domainJoinedDevice"
+                                              ],
+                          "customAuthenticationFactors":  [
+
+                                                          ],
+                          "termsOfUse":  [
+
+                                         ]
+                      },
+    "sessionControls":  {
+                            "applicationEnforcedRestrictions":  null,
+                            "cloudAppSecurity":  null,
+                            "persistentBrowser":  null,
+                            "signInFrequency":  {
+                                                    "value":  1,
+                                                    "type":  "hours",
+                                                    "isEnabled":  true
+                                                }
+                        }
+}

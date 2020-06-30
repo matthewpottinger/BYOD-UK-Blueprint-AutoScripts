@@ -1,0 +1,87 @@
+{
+    "id":  "5b792d14-9d27-4aad-ae7e-586939a5e9cc",
+    "displayName":  "BYOD - Better - MCAS Session Control",
+    "createdDateTime":  null,
+    "modifiedDateTime":  "2020-05-26T19:32:54.2093517Z",
+    "state":  "enabled",
+    "conditions":  {
+                       "userRiskLevels":  [
+
+                                          ],
+                       "signInRiskLevels":  [
+
+                                            ],
+                       "clientAppTypes":  [
+                                              "browser",
+                                              "mobileAppsAndDesktopClients"
+                                          ],
+                       "locations":  null,
+                       "deviceStates":  null,
+                       "devices":  null,
+                       "applications":  {
+                                            "includeApplications":  [
+                                                                        "Office365"
+                                                                    ],
+                                            "excludeApplications":  [
+
+                                                                    ],
+                                            "includeUserActions":  [
+
+                                                                   ]
+                                        },
+                       "users":  {
+                                     "includeUsers":  [
+
+                                                      ],
+                                     "excludeUsers":  [
+
+                                                      ],
+                                     "includeGroups":  [
+                                                           "aa2d7d4e-6594-48a0-824b-ad00adb76c08"
+                                                       ],
+                                     "excludeGroups":  [
+
+                                                       ],
+                                     "includeRoles":  [
+
+                                                      ],
+                                     "excludeRoles":  [
+
+                                                      ]
+                                 },
+                       "platforms":  {
+                                         "includePlatforms":  [
+                                                                  "all"
+                                                              ],
+                                         "excludePlatforms":  [
+                                                                  "android",
+                                                                  "iOS"
+                                                              ]
+                                     }
+                   },
+    "grantControls":  {
+                          "operator":  "OR",
+                          "builtInControls":  [
+                                                  "mfa"
+                                              ],
+                          "customAuthenticationFactors":  [
+
+                                                          ],
+                          "termsOfUse":  [
+
+                                         ]
+                      },
+    "sessionControls":  {
+                            "applicationEnforcedRestrictions":  null,
+                            "persistentBrowser":  null,
+                            "cloudAppSecurity":  {
+                                                     "cloudAppSecurityType":  "blockDownloads",
+                                                     "isEnabled":  true
+                                                 },
+                            "signInFrequency":  {
+                                                    "value":  4,
+                                                    "type":  "hours",
+                                                    "isEnabled":  true
+                                                }
+                        }
+}
