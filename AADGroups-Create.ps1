@@ -3,7 +3,7 @@
 
 ####################################################
 
-$GroupsJSON = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\Groups.json"
+$GroupsJSON = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\JSON\Groups.json"
 
 Function Set-AADAuth {
 <#

@@ -1,0 +1,77 @@
+{
+    "id":  "c915f34c-428f-4d4f-ac0b-513c2a9cccd8",
+    "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on iOS",
+    "createdDateTime":  "2020-06-30T14:52:37.4396079Z",
+    "modifiedDateTime":  null,
+    "state":  "disabled",
+    "sessionControls":  null,
+    "conditions":  {
+                       "userRiskLevels":  [
+
+                                          ],
+                       "signInRiskLevels":  [
+
+                                            ],
+                       "clientAppTypes":  [
+                                              "mobileAppsAndDesktopClients"
+                                          ],
+                       "locations":  null,
+                       "deviceStates":  null,
+                       "devices":  null,
+                       "applications":  {
+                                            "includeApplications":  [
+                                                                        "9ea1ad79-fdb6-4f9a-8bc3-2b70f96e34c7",
+                                                                        "Office365"
+                                                                    ],
+                                            "excludeApplications":  [
+
+                                                                    ],
+                                            "includeUserActions":  [
+
+                                                                   ]
+                                        },
+                       "users":  {
+                                     "includeUsers":  [
+
+                                                      ],
+                                     "excludeUsers":  [
+
+                                                      ],
+                                     "includeGroups":  [
+                                                           "BYOD-Best-Mobile Device-Users-Enabled",
+                                                           "BYOD-Better-Mobile Device-Users-Enabled",
+                                                           "BYOD-Good-Mobile Device-Users-Enabled"
+                                                       ],
+                                     "excludeGroups":  [
+
+                                                       ],
+                                     "includeRoles":  [
+
+                                                      ],
+                                     "excludeRoles":  [
+
+                                                      ]
+                                 },
+                       "platforms":  {
+                                         "includePlatforms":  [
+                                                                  "iOS"
+                                                              ],
+                                         "excludePlatforms":  [
+
+                                                              ]
+                                     }
+                   },
+    "grantControls":  {
+                          "operator":  "AND",
+                          "builtInControls":  [
+                                                  "mfa",
+                                                  "approvedApplication"
+                                              ],
+                          "customAuthenticationFactors":  [
+
+                                                          ],
+                          "termsOfUse":  [
+
+                                         ]
+                      }
+}
