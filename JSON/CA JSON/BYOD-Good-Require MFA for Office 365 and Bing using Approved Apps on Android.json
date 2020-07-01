@@ -1,8 +1,8 @@
 {
-    "id":  "f02e062c-8881-4e6f-a9c6-3dea0bb49ca7",
-    "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on iOS",
+    "id":  "55e1673e-4bf5-4bbb-8120-752863df117d",
+    "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on Android",
     "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:05:14.04497Z",
+    "modifiedDateTime":  "2020-07-01T13:05:03.3048626Z",
     "state":  "disabled",
     "sessionControls":  null,
     "conditions":  {
@@ -38,9 +38,9 @@
 
                                                       ],
                                      "includeGroups":  [
-                                                           "BYOD-Best-Mobile Device-Users-Enabled",
+                                                           "BYOD-Good-Mobile Device-Users-Enabled",
                                                            "BYOD-Better-Mobile Device-Users-Enabled",
-                                                           "BYOD-Good-Mobile Device-Users-Enabled"
+                                                           "BYOD-Best-Mobile Device-Users-Enabled"
                                                        ],
                                      "excludeGroups":  [
 
@@ -54,7 +54,7 @@
                                  },
                        "platforms":  {
                                          "includePlatforms":  [
-                                                                  "iOS"
+                                                                  "android"
                                                               ],
                                          "excludePlatforms":  [
 

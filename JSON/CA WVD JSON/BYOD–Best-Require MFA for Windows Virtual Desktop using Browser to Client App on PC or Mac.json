@@ -1,8 +1,8 @@
 {
-    "id":  "f02e062c-8881-4e6f-a9c6-3dea0bb49ca7",
-    "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on iOS",
+    "id":  "b8864e26-6a23-4eb6-9544-8d27107b2bfc",
+    "displayName":  "BYOD?Best-Require MFA for Windows Virtual Desktop using Browser to Client App on PC or Mac",
     "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:05:14.04497Z",
+    "modifiedDateTime":  "2020-07-01T13:25:11.4151693Z",
     "state":  "disabled",
     "sessionControls":  null,
     "conditions":  {
@@ -13,6 +13,7 @@
 
                                             ],
                        "clientAppTypes":  [
+                                              "browser",
                                               "mobileAppsAndDesktopClients"
                                           ],
                        "locations":  null,
@@ -20,8 +21,9 @@
                        "devices":  null,
                        "applications":  {
                                             "includeApplications":  [
-                                                                        "9ea1ad79-fdb6-4f9a-8bc3-2b70f96e34c7",
-                                                                        "Office365"
+                                                                        "5a0aa725-4958-4b0c-80a9-34562e23f3b7",
+                                                                        "9cdead84-a844-4324-93f2-b2e6bb768d07",
+                                                                        "fa4345a4-a730-4230-84a8-7d9651b86739"
                                                                     ],
                                             "excludeApplications":  [
 
@@ -38,12 +40,11 @@
 
                                                       ],
                                      "includeGroups":  [
-                                                           "BYOD-Best-Mobile Device-Users-Enabled",
-                                                           "BYOD-Better-Mobile Device-Users-Enabled",
-                                                           "BYOD-Good-Mobile Device-Users-Enabled"
+                                                           "BYOD-Best-PC-Users-Enabled "
                                                        ],
                                      "excludeGroups":  [
-
+                                                           "BYOD-Good-PC-Users-Enabled",
+                                                           "BYOD-Better-PC-Users-Enabled"
                                                        ],
                                      "includeRoles":  [
 
@@ -54,18 +55,18 @@
                                  },
                        "platforms":  {
                                          "includePlatforms":  [
-                                                                  "iOS"
+                                                                  "all"
                                                               ],
                                          "excludePlatforms":  [
-
+                                                                  "android",
+                                                                  "iOS"
                                                               ]
                                      }
                    },
     "grantControls":  {
-                          "operator":  "AND",
+                          "operator":  "OR",
                           "builtInControls":  [
-                                                  "mfa",
-                                                  "approvedApplication"
+                                                  "mfa"
                                               ],
                           "customAuthenticationFactors":  [
 

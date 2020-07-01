@@ -1,8 +1,8 @@
 {
-    "id":  "f02e062c-8881-4e6f-a9c6-3dea0bb49ca7",
-    "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on iOS",
-    "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:05:14.04497Z",
+    "id":  "cd7cdb16-1cbd-4932-8f4e-5437648e923b",
+    "displayName":  "BYOD-Best-Block access to Windows Virtual Desktop and Office 365 using Browser or Modern Apps with Sign-in Risk Medium and High on all platforms",
+    "createdDateTime":  "2020-07-01T13:22:38.6669087Z",
+    "modifiedDateTime":  null,
     "state":  "disabled",
     "sessionControls":  null,
     "conditions":  {
@@ -10,17 +10,23 @@
 
                                           ],
                        "signInRiskLevels":  [
-
+                                                "high",
+                                                "medium"
                                             ],
                        "clientAppTypes":  [
+                                              "browser",
                                               "mobileAppsAndDesktopClients"
                                           ],
+                       "platforms":  null,
                        "locations":  null,
                        "deviceStates":  null,
                        "devices":  null,
                        "applications":  {
                                             "includeApplications":  [
                                                                         "9ea1ad79-fdb6-4f9a-8bc3-2b70f96e34c7",
+                                                                        "5a0aa725-4958-4b0c-80a9-34562e23f3b7",
+                                                                        "9cdead84-a844-4324-93f2-b2e6bb768d07",
+                                                                        "fa4345a4-a730-4230-84a8-7d9651b86739",
                                                                         "Office365"
                                                                     ],
                                             "excludeApplications":  [
@@ -38,12 +44,11 @@
 
                                                       ],
                                      "includeGroups":  [
-                                                           "BYOD-Best-Mobile Device-Users-Enabled",
-                                                           "BYOD-Better-Mobile Device-Users-Enabled",
-                                                           "BYOD-Good-Mobile Device-Users-Enabled"
+                                                           "BYOD-Best-PC-Users-Enabled "
                                                        ],
                                      "excludeGroups":  [
-
+                                                           "BYOD-Good-PC-Users-Enabled",
+                                                           "BYOD-Better-PC-Users-Enabled"
                                                        ],
                                      "includeRoles":  [
 
@@ -51,21 +56,12 @@
                                      "excludeRoles":  [
 
                                                       ]
-                                 },
-                       "platforms":  {
-                                         "includePlatforms":  [
-                                                                  "iOS"
-                                                              ],
-                                         "excludePlatforms":  [
-
-                                                              ]
-                                     }
+                                 }
                    },
     "grantControls":  {
-                          "operator":  "AND",
+                          "operator":  "OR",
                           "builtInControls":  [
-                                                  "mfa",
-                                                  "approvedApplication"
+                                                  "block"
                                               ],
                           "customAuthenticationFactors":  [
 

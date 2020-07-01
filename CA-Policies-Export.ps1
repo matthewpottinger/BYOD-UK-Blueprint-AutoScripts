@@ -81,7 +81,7 @@ NAME: Get-AuthToken
 	
 	[System.Reflection.Assembly]::LoadFrom($adalforms) | Out-Null
 	
-	$clientId = "e0c8b343-eaf3-4db5-856d-95013294fa95"
+	$clientId = "5326eec5-1498-4340-9e90-d37a981de794"
 	
 	$redirectUri = "urn:ietf:wg:oauth:2.0:oob"
 	

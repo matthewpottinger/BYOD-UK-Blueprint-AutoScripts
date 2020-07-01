@@ -1,8 +1,8 @@
 {
-    "id":  "f02e062c-8881-4e6f-a9c6-3dea0bb49ca7",
-    "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on iOS",
+    "id":  "6b36d6c6-5c84-43f6-bd90-c15fb173c2e8",
+    "displayName":  "BYOD-Good-Require MFA for Office 365 using Browser Only on PC or Mac - Issue with Session Control",
     "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:05:14.04497Z",
+    "modifiedDateTime":  "2020-07-01T13:19:03.5619372Z",
     "state":  "disabled",
     "sessionControls":  null,
     "conditions":  {
@@ -13,7 +13,7 @@
 
                                             ],
                        "clientAppTypes":  [
-                                              "mobileAppsAndDesktopClients"
+                                              "browser"
                                           ],
                        "locations":  null,
                        "deviceStates":  null,
@@ -38,12 +38,11 @@
 
                                                       ],
                                      "includeGroups":  [
-                                                           "BYOD-Best-Mobile Device-Users-Enabled",
-                                                           "BYOD-Better-Mobile Device-Users-Enabled",
-                                                           "BYOD-Good-Mobile Device-Users-Enabled"
+                                                           "BYOD-Good-PC-Users-Enabled"
                                                        ],
                                      "excludeGroups":  [
-
+                                                           "BYOD-Best-PC-Users-Enabled ",
+                                                           "BYOD-Better-PC-Users-Enabled"
                                                        ],
                                      "includeRoles":  [
 
@@ -54,18 +53,18 @@
                                  },
                        "platforms":  {
                                          "includePlatforms":  [
-                                                                  "iOS"
+                                                                  "all"
                                                               ],
                                          "excludePlatforms":  [
-
+                                                                  "android",
+                                                                  "iOS"
                                                               ]
                                      }
                    },
     "grantControls":  {
-                          "operator":  "AND",
+                          "operator":  "OR",
                           "builtInControls":  [
-                                                  "mfa",
-                                                  "approvedApplication"
+                                                  "mfa"
                                               ],
                           "customAuthenticationFactors":  [
 
