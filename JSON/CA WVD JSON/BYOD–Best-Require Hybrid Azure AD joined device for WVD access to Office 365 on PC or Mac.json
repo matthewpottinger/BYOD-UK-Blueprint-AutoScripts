@@ -1,10 +1,9 @@
 {
-    "id":  "6b36d6c6-5c84-43f6-bd90-c15fb173c2e8",
-    "displayName":  "BYOD-Good-Require MFA for Office 365 using Browser Only on PC or Mac - Issue with Session Control",
+    "id":  "82e9cc49-e787-4c70-9e74-2dd092769014",
+    "displayName":  "BYOD?Best-Require Hybrid Azure AD joined device for WVD access to Office 365 on PC or Mac",
     "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:19:03.5619372Z",
+    "modifiedDateTime":  "2020-07-02T08:20:25.5784931Z",
     "state":  "disabled",
-    "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [
 
@@ -13,14 +12,14 @@
 
                                             ],
                        "clientAppTypes":  [
-                                              "browser"
+                                              "browser",
+                                              "mobileAppsAndDesktopClients"
                                           ],
                        "locations":  null,
                        "deviceStates":  null,
                        "devices":  null,
                        "applications":  {
                                             "includeApplications":  [
-                                                                        "9ea1ad79-fdb6-4f9a-8bc3-2b70f96e34c7",
                                                                         "Office365"
                                                                     ],
                                             "excludeApplications":  [
@@ -38,11 +37,11 @@
 
                                                       ],
                                      "includeGroups":  [
-                                                           "BYOD-Good-PC-Users-Enabled"
+                                                           "BYOD-Best-PC-Users-Enabled "
                                                        ],
                                      "excludeGroups":  [
-                                                           "BYOD-Best-PC-Users-Enabled ",
-                                                           "BYOD-Better-PC-Users-Enabled"
+                                                           "BYOD-Better-PC-Users-Enabled",
+                                                           "BYOD-Good-PC-Users-Enabled"
                                                        ],
                                      "includeRoles":  [
 
@@ -64,7 +63,7 @@
     "grantControls":  {
                           "operator":  "OR",
                           "builtInControls":  [
-                                                  "mfa"
+                                                  "domainJoinedDevice"
                                               ],
                           "customAuthenticationFactors":  [
 
@@ -72,5 +71,13 @@
                           "termsOfUse":  [
 
                                          ]
-                      }
+                      },
+    "sessionControls":  {
+                            "cloudAppSecurity":  null,
+                            "signInFrequency":  null,
+                            "persistentBrowser":  null,
+                            "applicationEnforcedRestrictions":  {
+                                                                    "isEnabled":  true
+                                                                }
+                        }
 }
