@@ -1,9 +1,9 @@
 {
-    "id":  "20b387e0-1592-4285-8f05-d88a590ffb22",
+    "id":  "45811a09-590e-4643-891d-785858a21b09",
     "displayName":  "BYOD-Better-Block access to Office 365 with Sign-in Risk Medium and High on all platforms",
-    "createdDateTime":  "2020-07-01T13:14:06.4476182Z",
+    "createdDateTime":  "2020-07-02T13:10:03.0463235Z",
     "modifiedDateTime":  null,
-    "state":  "disabled",
+    "state":  "enabledForReportingButNotEnforced",
     "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [

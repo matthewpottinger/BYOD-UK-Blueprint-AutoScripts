@@ -1,9 +1,9 @@
 {
-    "id":  "a9c3b06b-a645-4abc-91b8-c1300f15b029",
+    "id":  "0bbf5bf6-1291-4f48-ac24-e1339effeea8",
     "displayName":  "BYOD-Common-Block Legacy Authentication",
-    "createdDateTime":  "2020-07-01T13:32:09.7173794Z",
+    "createdDateTime":  "2020-07-02T13:10:05.2494197Z",
     "modifiedDateTime":  null,
-    "state":  "disabled",
+    "state":  "enabledForReportingButNotEnforced",
     "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [

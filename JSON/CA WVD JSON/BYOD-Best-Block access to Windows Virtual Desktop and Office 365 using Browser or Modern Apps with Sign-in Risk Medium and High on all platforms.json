@@ -1,9 +1,9 @@
 {
-    "id":  "cd7cdb16-1cbd-4932-8f4e-5437648e923b",
+    "id":  "cdec46c4-ae45-4427-aee2-33d9ba109cb2",
     "displayName":  "BYOD-Best-Block access to Windows Virtual Desktop and Office 365 using Browser or Modern Apps with Sign-in Risk Medium and High on all platforms",
-    "createdDateTime":  "2020-07-01T13:22:38.6669087Z",
-    "modifiedDateTime":  null,
-    "state":  "disabled",
+    "createdDateTime":  null,
+    "modifiedDateTime":  "2020-07-02T13:15:48.0722339Z",
+    "state":  "enabledForReportingButNotEnforced",
     "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [
@@ -23,10 +23,8 @@
                        "devices":  null,
                        "applications":  {
                                             "includeApplications":  [
-                                                                        "9ea1ad79-fdb6-4f9a-8bc3-2b70f96e34c7",
-                                                                        "5a0aa725-4958-4b0c-80a9-34562e23f3b7",
                                                                         "9cdead84-a844-4324-93f2-b2e6bb768d07",
-                                                                        "fa4345a4-a730-4230-84a8-7d9651b86739",
+                                                                        "9ea1ad79-fdb6-4f9a-8bc3-2b70f96e34c7",
                                                                         "Office365"
                                                                     ],
                                             "excludeApplications":  [

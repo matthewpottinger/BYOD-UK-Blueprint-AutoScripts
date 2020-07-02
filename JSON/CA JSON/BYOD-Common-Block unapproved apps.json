@@ -1,9 +1,9 @@
 {
-    "id":  "b597b0ba-83c5-4422-911e-e40de46bc6cf",
+    "id":  "5d270ca2-c943-44c6-b863-00342aaa916e",
     "displayName":  "BYOD-Common-Block unapproved apps",
-    "createdDateTime":  "2020-07-01T13:34:28.5529085Z",
+    "createdDateTime":  "2020-07-02T13:10:06.3623134Z",
     "modifiedDateTime":  null,
-    "state":  "disabled",
+    "state":  "enabledForReportingButNotEnforced",
     "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [
@@ -13,7 +13,8 @@
 
                                             ],
                        "clientAppTypes":  [
-                                              "all"
+                                              "browser",
+                                              "mobileAppsAndDesktopClients"
                                           ],
                        "locations":  null,
                        "deviceStates":  null,

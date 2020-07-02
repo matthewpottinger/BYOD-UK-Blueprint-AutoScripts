@@ -1,9 +1,9 @@
 {
-    "id":  "7d137e45-a0d0-4c45-8140-98b2f839d71f",
+    "id":  "68f25b8d-739b-4f85-9b25-6dd460a0eccd",
     "displayName":  "BYOD-Better-Require MFA for Office 365 using Browser Only with Session Control on PC or Mac",
-    "createdDateTime":  "2020-07-01T13:16:35.4773064Z",
+    "createdDateTime":  "2020-07-02T13:10:04.2600299Z",
     "modifiedDateTime":  null,
-    "state":  "disabled",
+    "state":  "enabledForReportingButNotEnforced",
     "conditions":  {
                        "userRiskLevels":  [
 

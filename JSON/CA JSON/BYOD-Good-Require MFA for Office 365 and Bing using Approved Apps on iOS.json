@@ -1,9 +1,9 @@
 {
-    "id":  "f02e062c-8881-4e6f-a9c6-3dea0bb49ca7",
+    "id":  "a7b6f40a-5391-4830-9a1a-23a544d2d5a8",
     "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on iOS",
-    "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:05:14.04497Z",
-    "state":  "disabled",
+    "createdDateTime":  "2020-07-02T13:10:08.0966949Z",
+    "modifiedDateTime":  null,
+    "state":  "enabledForReportingButNotEnforced",
     "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [

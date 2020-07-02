@@ -1,9 +1,9 @@
 {
-    "id":  "55e1673e-4bf5-4bbb-8120-752863df117d",
+    "id":  "932c023b-60d8-4997-ba79-0011b4cb2ece",
     "displayName":  "BYOD-Good-Require MFA for Office 365 and Bing using Approved Apps on Android",
-    "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:05:03.3048626Z",
-    "state":  "disabled",
+    "createdDateTime":  "2020-07-02T13:10:07.2182101Z",
+    "modifiedDateTime":  null,
+    "state":  "enabledForReportingButNotEnforced",
     "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [

@@ -1,9 +1,9 @@
 {
-    "id":  "82e9cc49-e787-4c70-9e74-2dd092769014",
-    "displayName":  "BYOD?Best-Require Hybrid Azure AD joined device for WVD access to Office 365 on PC or Mac",
+    "id":  "4f29b9a6-f1e6-475f-9b60-59a5145a8f78",
+    "displayName":  "BYOD-Best-Require Hybrid Azure AD joined device for WVD access to Office 365 on PC or Mac",
     "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-02T08:20:25.5784931Z",
-    "state":  "disabled",
+    "modifiedDateTime":  "2020-07-02T13:16:01.5261577Z",
+    "state":  "enabledForReportingButNotEnforced",
     "conditions":  {
                        "userRiskLevels":  [
 
@@ -56,7 +56,8 @@
                                                               ],
                                          "excludePlatforms":  [
                                                                   "android",
-                                                                  "iOS"
+                                                                  "iOS",
+                                                                  "macOS"
                                                               ]
                                      }
                    },

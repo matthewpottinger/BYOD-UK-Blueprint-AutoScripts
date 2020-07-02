@@ -1,9 +1,9 @@
 {
-    "id":  "b8864e26-6a23-4eb6-9544-8d27107b2bfc",
-    "displayName":  "BYOD?Best-Require MFA for Windows Virtual Desktop using Browser to Client App on PC or Mac",
+    "id":  "22d8ea35-5632-4c16-ab74-fa023ea151a5",
+    "displayName":  "BYOD-Best-Require MFA for Windows Virtual Desktop using Browser to Client App on PC or Mac",
     "createdDateTime":  null,
-    "modifiedDateTime":  "2020-07-01T13:25:11.4151693Z",
-    "state":  "disabled",
+    "modifiedDateTime":  "2020-07-02T13:15:12.8587912Z",
+    "state":  "enabledForReportingButNotEnforced",
     "sessionControls":  null,
     "conditions":  {
                        "userRiskLevels":  [
@@ -21,9 +21,7 @@
                        "devices":  null,
                        "applications":  {
                                             "includeApplications":  [
-                                                                        "5a0aa725-4958-4b0c-80a9-34562e23f3b7",
-                                                                        "9cdead84-a844-4324-93f2-b2e6bb768d07",
-                                                                        "fa4345a4-a730-4230-84a8-7d9651b86739"
+                                                                        "9cdead84-a844-4324-93f2-b2e6bb768d07"
                                                                     ],
                                             "excludeApplications":  [
 
