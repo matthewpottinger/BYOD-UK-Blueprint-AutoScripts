@@ -62,11 +62,19 @@ $delPermission4 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAcc
 $reqGraph.ResourceAccess = $delPermission1, $delPermission2, $delPermission3, $delPermission4
 
 $CAAppReg = get-AzureADApplication -filter "DisplayName eq 'CA Policy PowerShell Tool'"
-    if ($CAAppReg = $null)
+
+    if ($CAAppReg -eq $null)
         { 
             New-AzureADApplication -DisplayName "CA Policy PowerShell Tool" -PublicClient $true -ReplyUrls urn:ietf:wg:oauth:2.0:oob -RequiredResourceAccess $reqGraph
+            
+
         }
     else 
         {
             Write-Host "CA Policy PowerShell Tool already configured" -ForegroundColor Yellow
+            Write-Host "AppRegistration ID is " $CAAppReg.appid -ForegroundColor Green
+
         }
+
+
+
