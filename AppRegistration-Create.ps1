@@ -1,4 +1,51 @@
-Connect-AzAccount
+
+Function Set-AADAuth {
+    <#
+    .SYNOPSIS
+    This function is used to authenticate with the Azure AD interface
+    .DESCRIPTION
+    The function authenticate with the Azure AD Interface with the tenant name
+    .EXAMPLE
+    Set-AADAuth
+    Authenticates you with the Azure AD interface
+    .NOTES
+    NAME: Set-AADAuth
+    #>
+    
+    [cmdletbinding()]
+    
+    param
+    (
+        #[Parameter(Mandatory=$true)]
+        #$User
+    )
+    
+    Write-Host "Checking for AzureAD module..."
+    
+        $AadModule = Get-Module -Name "AzureAD" -ListAvailable
+    
+        if ($AadModule -eq $null) {
+            write-host
+            write-host "AzureAD Powershell module not installed..." -f Red
+            write-host "Attempting module install now" -f Red
+            Install-Module -Name AzureAD -AllowClobber -Force
+            #write-host "Install by running 'Install-Module AzureAD' or 'Install-Module AzureADPreview' from an elevated PowerShell prompt" -f Yellow
+            #write-host "Script can't continue..." -f Red
+            write-host
+            #exit
+        }
+    
+        Connect-AzureAD
+    
+    }
+    
+####################################################
+    
+    Set-AADAuth
+    
+####################################################
+    
+    
 
 $svcprincipal = Get-AzureADServicePrincipal -All $true | ? { $_.DisplayName -eq "Microsoft Graph" }
  
@@ -14,5 +61,12 @@ $delPermission4 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAcc
 
 $reqGraph.ResourceAccess = $delPermission1, $delPermission2, $delPermission3, $delPermission4
 
-
-New-AzureADApplication -DisplayName "CA Policy PowerShell Tool" -PublicClient $true -ReplyUrls urn:ietf:wg:oauth:2.0:oob -RequiredResourceAccess $reqGraph
+$CAAppReg = get-AzureADApplication -filter "DisplayName eq 'CA Policy PowerShell Tool'"
+    if ($CAAppReg = $null)
+        { 
+            New-AzureADApplication -DisplayName "CA Policy PowerShell Tool" -PublicClient $true -ReplyUrls urn:ietf:wg:oauth:2.0:oob -RequiredResourceAccess $reqGraph
+        }
+    else 
+        {
+            Write-Host "CA Policy PowerShell Tool already configured" -ForegroundColor Yellow
+        }
