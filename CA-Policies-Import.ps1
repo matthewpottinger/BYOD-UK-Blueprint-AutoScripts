@@ -97,7 +97,21 @@ Write-Host "Checking for AzureAD module..."
 
 [System.Reflection.Assembly]::LoadFrom($adalforms) | Out-Null
 
-$clientId = "10ee97b8-2f71-4e84-a4fa-fa65c08e1d45"
+
+$CAAppReg = get-AzureADApplication -filter "DisplayName eq 'CA Policy PowerShell Tool'"
+
+    if ($CAAppReg -eq $null)
+        { 
+           Write-Host "Run AppRegistration scipt" -ForegroundColor Red
+           
+        }
+    else 
+        {
+            $clientId = $CAAppReg.appid
+
+        }
+        
+#$clientId = "10ee97b8-2f71-4e84-a4fa-fa65c08e1d45"
 
 $redirectUri = "urn:ietf:wg:oauth:2.0:oob"
 
