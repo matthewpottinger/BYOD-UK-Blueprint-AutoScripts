@@ -6,7 +6,7 @@ A large number of the scripts are based on the powershell scripts created by Dav
 
 # Implementation Guide #
 
-THe following provides details on what each script does:
+The following provides details on what each script does:
 
 ## BYOD-UK-BP-MasterScript.ps1 ##
 
@@ -35,7 +35,7 @@ Creates an AppRegistration called CA Policy PowerShell Tool with the correct per
 
 ## CA-Policies-Import.ps1 ##
 
-Imports Conditional Access policies from the [JSON\CA JSON](JSON/CA JSON) folder into tenant with the correct permissions in Readonly mode
+Imports Conditional Access policies from the "JSON\CA JSON" folder into tenant with the correct permissions in Readonly mode
 
 ## MAM-Policies-Import.ps1 ##
 
