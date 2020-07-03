@@ -16,18 +16,18 @@ Triggers the running of all other scripts - Work in Progress
 
 Creates the following Groups:
 
-BYOD-Good-Mobile Device-Users-Enabled
-BYOD-Good-PC-Users-Enabled
-BYOD-Good-Exclude Mobile Device-Users
-BYOD-Good-Exclude PC-Users
-BYOD-Better-Mobile Device-Users-Enabled
-BYOD-Better-PC-Users-Enabled
-BYOD-Better-Exclude-Mobile Device-Users
-BYOD-Better-Exclude PC-Users
-BYOD-Best-Mobile Device-Users-Enabled
-BYOD-Best-PC-Users-Enabled
-BYOD-Best-Exclude Mobile Device-Users
-BYOD-Best-Exclude PC-Users
+- BYOD-Good-Mobile Device-Users-Enabled
+- BYOD-Good-PC-Users-Enabled
+- BYOD-Good-Exclude Mobile Device-Users
+- BYOD-Good-Exclude PC-Users
+- BYOD-Better-Mobile Device-Users-Enabled
+- BYOD-Better-PC-Users-Enabled
+- BYOD-Better-Exclude-Mobile Device-Users
+- BYOD-Better-Exclude PC-Users
+- BYOD-Best-Mobile Device-Users-Enabled
+- BYOD-Best-PC-Users-Enabled
+- BYOD-Best-Exclude Mobile Device-Users
+- BYOD-Best-Exclude PC-Users
 
 ## AppRegistration-Create.ps1 ##
 
