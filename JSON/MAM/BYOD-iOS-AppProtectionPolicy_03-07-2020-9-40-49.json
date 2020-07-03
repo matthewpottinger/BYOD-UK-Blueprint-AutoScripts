@@ -2,13 +2,13 @@
     "@odata.context":  "https://graph.microsoft.com/Beta/$metadata#deviceAppManagement/iosManagedAppProtections(apps())/$entity",
     "displayName":  "BYOD-iOS-AppProtectionPolicy",
     "description":  "",
-    "createdDateTime":  "2020-07-01T15:07:55.6598165Z",
-    "lastModifiedDateTime":  "2020-07-01T15:07:55Z",
+    "createdDateTime":  "2020-07-03T08:38:33.6023758Z",
+    "lastModifiedDateTime":  "2020-07-03T08:39:04Z",
     "roleScopeTagIds":  [
                             "0"
                         ],
-    "id":  "T_6319d915-f5c9-438d-9482-60da6614957b",
-    "version":  "\"f5dc83cb-b9f6-4fad-b47a-016db7e1c007\"",
+    "id":  "T_de2d745f-3c34-410e-a05d-27158dc2abc9",
+    "version":  "\"4fdb8163-c4b6-448a-9142-de29a302b223\"",
     "periodOfflineBeforeAccessCheck":  "PT12H",
     "periodOnlineBeforeAccessCheck":  "PT10M",
     "allowedInboundDataTransferSources":  "managedApps",
@@ -56,11 +56,11 @@
                                       ],
     "appActionIfUnableToAuthenticateUser":  null,
     "dialerRestrictionLevel":  "allApps",
-    "isAssigned":  true,
+    "isAssigned":  false,
     "targetedAppManagementLevels":  "unspecified",
     "appDataEncryptionType":  "whenDeviceLocked",
     "minimumRequiredSdkVersion":  null,
-    "deployedAppCount":  19,
+    "deployedAppCount":  20,
     "faceIdBlocked":  false,
     "minimumWipeSdkVersion":  null,
     "allowedIosDeviceModels":  null,
@@ -77,7 +77,7 @@
                                      "value":  "skype;app-settings;calshow;itms;itmss;itms-apps;itms-appss;itms-services;"
                                  }
                              ],
-    "apps@odata.context":  "https://graph.microsoft.com/Beta/$metadata#deviceAppManagement/iosManagedAppProtections(\u0027T_6319d915-f5c9-438d-9482-60da6614957b\u0027)/apps",
+    "apps@odata.context":  "https://graph.microsoft.com/Beta/$metadata#deviceAppManagement/iosManagedAppProtections(\u0027T_de2d745f-3c34-410e-a05d-27158dc2abc9\u0027)/apps",
     "apps":  [
                  {
                      "id":  "com.microsoft.dynamics.iphone.moca.ios",
@@ -173,6 +173,14 @@
                      "mobileAppIdentifier":  {
                                                  "@odata.type":  "#microsoft.graph.iosMobileAppIdentifier",
                                                  "bundleId":  "com.microsoft.powerbimobile"
+                                             }
+                 },
+                 {
+                     "id":  "com.microsoft.procsimo.ios",
+                     "version":  "-1388599138",
+                     "mobileAppIdentifier":  {
+                                                 "@odata.type":  "#microsoft.graph.iosMobileAppIdentifier",
+                                                 "bundleId":  "com.microsoft.procsimo"
                                              }
                  },
                  {
