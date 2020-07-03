@@ -9,7 +9,12 @@ See LICENSE in the project root for license information.
 
 ####################################################
 
-$ImportPath = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\JSON\MAM"
+
+$ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
+$ImportPath = $ScriptDir+"\JSON\MAM"
+
+
+#$ImportPath = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\JSON\MAM"
 
 
 
@@ -93,7 +98,20 @@ Write-Host "Checking for AzureAD module..."
 
 [System.Reflection.Assembly]::LoadFrom($adalforms) | Out-Null
 
-$clientId = "d1ddf0e4-d672-4dae-b554-9d5bdfd93547"
+$CAAppReg = get-AzureADApplication -filter "DisplayName eq 'BYOD UK BP PowerShell Tool'"
+
+    if ($CAAppReg -eq $null)
+        { 
+           Write-Host "Run AppRegistration scipt" -ForegroundColor Red
+           
+        }
+    else 
+        {
+            $clientId = $CAAppReg.appid
+
+        }
+
+#$clientId = "d1ddf0e4-d672-4dae-b554-9d5bdfd93547"
 
 $redirectUri = "urn:ietf:wg:oauth:2.0:oob"
 
@@ -578,17 +596,17 @@ $global:authToken = Get-AuthToken -User $User
 
 # Setting application AAD Group to assign Policy
 
-$AADGroup = Read-Host -Prompt "Enter the Azure AD Group name where policies will be assigned"
+# $AADGroup = Read-Host -Prompt "Enter the Azure AD Group name where policies will be assigned"
+# 
+# $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $AADGroup}).id
+#
+#    if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
+#
+#    Write-Host "AAD Group - '$AADGroup' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
+#    Write-Host
+#    exit
 
-$TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $AADGroup}).id
-
-    if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
-
-    Write-Host "AAD Group - '$AADGroup' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
-    Write-Host
-    exit
-
-    }
+#    }
 
 
 #$ImportPath = Read-Host -Prompt "Please specify a path to a JSON file to import data from e.g. C:\IntuneOutput\Policies\policy.json"
@@ -632,13 +650,13 @@ Foreach-object {
     Write-Host "Adding App Protection Policy '$DisplayName'" -ForegroundColor Yellow
     Add-ManagedAppPolicy -JSON $JSON_Output
 
-    $APP = Get-ManagedAppPolicy -name $DisplayName
+    #$APP = Get-ManagedAppPolicy -name $DisplayName
 
-    $APPID = $App.id
+    #$APPID = $App.id
 
-    Write-Host "Device ConfigID '$AppID' and Target '$TargetGroupID'"
+    #Write-Host "Device ConfigID '$AppID' and Target '$TargetGroupID'"
 
-    $Assign = Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $TargetGroupId -OS
+    #$Assign = Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $TargetGroupId -OS
 
 }
         
