@@ -41,7 +41,7 @@ Function Set-AADAuth {
     
 ####################################################
     
-    Set-AADAuth
+#   Set-AADAuth
     
 ####################################################
     
@@ -57,22 +57,23 @@ $delPermission1 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAcc
 $delPermission2 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "572fea84-0151-49b2-9301-11cb16974376","Scope" # Policy.Read.All
 $delPermission3 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "c79f8feb-a9db-4090-85f9-90d820caa0eb","Scope" # Application.Read.All
 $delPermission4 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "ad902697-1014-4ef5-81ef-2b4301988e8c","Scope" # Policy.ReadWrite.ConditionalAccess
+$delPermission5 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "7b3f05d5-f68c-4b8d-8c59-a2ecd12f24af","Scope" # DeviceManagementApps.ReadWrite.All
 
 
-$reqGraph.ResourceAccess = $delPermission1, $delPermission2, $delPermission3, $delPermission4
+$reqGraph.ResourceAccess = $delPermission1, $delPermission2, $delPermission3, $delPermission4,$delPermission5
 
-$CAAppReg = get-AzureADApplication -filter "DisplayName eq 'CA Policy PowerShell Tool'"
+$CAAppReg = get-AzureADApplication -filter "DisplayName eq 'BYOD UK BP PowerShell Tool'"
 
     if ($CAAppReg -eq $null)
         { 
-            New-AzureADApplication -DisplayName "CA Policy PowerShell Tool" -PublicClient $true -ReplyUrls urn:ietf:wg:oauth:2.0:oob -RequiredResourceAccess $reqGraph
+            New-AzureADApplication -DisplayName "BYOD UK BP PowerShell Tool" -PublicClient $true -ReplyUrls urn:ietf:wg:oauth:2.0:oob -RequiredResourceAccess $reqGraph
             
 
         }
     else 
         {
-            Write-Host "CA Policy PowerShell Tool already configured" -ForegroundColor Yellow
-            Write-Host "AppRegistration ID is " $CAAppReg.appid -ForegroundColor Green
+            Write-Host "BYOD UK BP PowerShell Tool already configured" -ForegroundColor Yellow
+            Write-Host "App Registration ID is " $CAAppReg.appid -ForegroundColor Green
 
         }
 
