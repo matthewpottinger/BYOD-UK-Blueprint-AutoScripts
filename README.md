@@ -10,7 +10,7 @@ THe following provides details on what each script does:
 
 ## BYOD-UK-BP-MasterScript.ps1 ##
 
-Triggers the running of all other scripts
+Triggers the running of all other scripts - Work in Progress
 
 ## AADGroups-Create.ps1 ##
 
