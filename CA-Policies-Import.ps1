@@ -11,7 +11,10 @@ See LICENSE in the project root for license information.
 
 #$ImportPath = Read-Host -Prompt "Please specify a path to a JSON file to import data from e.g. C:\IntuneOutput\Policies\policy.json"
 
-$ImportPath = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\JSON\CA JSON"
+#$ImportPath = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\JSON\CA JSON"
+
+$ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
+$ImportPath = $ScriptDir+"\JSON\CA JSON"
 
 #$AADAllowGroup = "PAW-Mgmt-Accounts"
 
@@ -569,7 +572,7 @@ break
 ####################################################
 
 # Default state value when importing Conditional Access policy (disabled/enabled)
-$State = "disabled"
+$State = "enabledForReportingButNotEnforced"
 
 
 #region import policy templates
