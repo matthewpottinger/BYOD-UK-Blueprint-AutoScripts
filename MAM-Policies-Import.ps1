@@ -199,6 +199,65 @@ $JSON
 
 ####################################################
 
+Function Get-ManagedAppPolicy(){
+
+    <#
+    .SYNOPSIS
+    This function is used to get managed app policies from the Graph API REST interface
+    .DESCRIPTION
+    The function connects to the Graph API Interface and gets any managed app policies
+    .EXAMPLE
+    Get-ManagedAppPolicy
+    Returns any managed app policies configured in Intune
+    .NOTES
+    NAME: Get-ManagedAppPolicy
+    #>
+    
+    [cmdletbinding()]
+    
+    param
+    (
+        $Name
+    )
+    
+    $graphApiVersion = "Beta"
+    $Resource = "deviceAppManagement/managedAppPolicies"
+    
+        try {
+        
+            if($Name){
+        
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value | Where-Object { ($_.'displayName').contains("$Name") }
+        
+            }
+        
+            else {
+        
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value | Where-Object { ($_.'@odata.type').contains("ManagedAppProtection") -or ($_.'@odata.type').contains("InformationProtectionPolicy") }
+        
+            }
+        
+        }
+        
+        catch {
+        
+        $ex = $_.Exception
+        $errorResponse = $ex.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($errorResponse)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $responseBody = $reader.ReadToEnd();
+        Write-Host "Response content:`n$responseBody" -f Red
+        Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+        write-host
+        break
+        
+        }
+        
+    }
+
 Function Add-ManagedAppPolicy(){
 
 <#
@@ -260,6 +319,208 @@ $Resource = "deviceAppManagement/managedAppPolicies"
 
 }
 
+
+
+####################################################
+
+Function Assign-ManagedAppPolicy(){
+
+<#
+.SYNOPSIS
+This function is used to assign an AAD group to a Managed App Policy using the Graph API REST interface
+.DESCRIPTION
+The function connects to the Graph API Interface and assigns a Managed App Policy with an AAD Group
+.EXAMPLE
+Assign-ManagedAppPolicy -Id $Id -TargetGroupId $TargetGroupId -OS Android
+Assigns an AAD Group assignment to an Android App Protection Policy in Intune
+.EXAMPLE
+Assign-ManagedAppPolicy -Id $Id -TargetGroupId $TargetGroupId -OS iOS
+Assigns an AAD Group assignment to an iOS App Protection Policy in Intune
+.NOTES
+NAME: Assign-ManagedAppPolicy
+#>
+
+[cmdletbinding()]
+
+param
+(
+    $Id,
+    $TargetGroupId,
+    $OS
+)
+
+$graphApiVersion = "Beta"
+    
+    try {
+
+        if(!$Id){
+
+        write-host "No Policy Id specified, specify a valid Application Id" -f Red
+        break
+
+        }
+
+        if(!$TargetGroupId){
+
+        write-host "No Target Group Id specified, specify a valid Target Group Id" -f Red
+        break
+
+        }
+
+$JSON = @"
+
+{
+    "assignments":[
+    {
+        "target":
+        {
+            "groupId":"$TargetGroupId",
+            "@odata.type":"#microsoft.graph.groupAssignmentTarget"
+        }
+    }
+    ]
+}
+
+"@
+
+        if($OS -eq "" -or $OS -eq $null){
+
+        write-host "No OS parameter specified, please provide an OS. Supported value Android or iOS..." -f Red
+        Write-Host
+        break
+
+        }
+
+        elseif($OS -eq "Android"){
+
+        $uri = "https://graph.microsoft.com/beta/deviceAppManagement/iosManagedAppProtections('$ID')/assign"
+        Invoke-RestMethod -Uri $uri -Method Post -ContentType "application/json" -Body $JSON -Headers $authToken
+
+        }
+
+        elseif($OS -eq "iOS"){
+
+        $uri = "https://graph.microsoft.com/$graphApiVersion/deviceAppManagement/iosManagedAppProtections('$ID')/assign"
+        Invoke-RestMethod -Uri $uri -Method Post -ContentType "application/json" -Body $JSON -Headers $authToken
+
+        }
+    
+    }
+    
+    catch {
+
+    $ex = $_.Exception
+    $errorResponse = $ex.Response.GetResponseStream()
+    $reader = New-Object System.IO.StreamReader($errorResponse)
+    $reader.BaseStream.Position = 0
+    $reader.DiscardBufferedData()
+    $responseBody = $reader.ReadToEnd();
+    Write-Host "Response content:`n$responseBody" -f Red
+    Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+    write-host
+    break
+
+    }
+
+}
+
+####################################################
+####################################################
+
+Function Get-AADGroup(){
+
+    <#
+    .SYNOPSIS
+    This function is used to get AAD Groups from the Graph API REST interface
+    .DESCRIPTION
+    The function connects to the Graph API Interface and gets any Groups registered with AAD
+    .EXAMPLE
+    Get-AADGroup
+    Returns all users registered with Azure AD
+    .NOTES
+    NAME: Get-AADGroup
+    #>
+    
+    [cmdletbinding()]
+    
+    param
+    (
+        $GroupName,
+        $id,
+        [switch]$Members
+    )
+    
+    # Defining Variables
+    $graphApiVersion = "v1.0"
+    $Group_resource = "groups"
+        
+        try {
+    
+            if($id){
+    
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=id eq '$id'"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+    
+            }
+            
+            elseif($GroupName -eq "" -or $GroupName -eq $null){
+            
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+            
+            }
+    
+            else {
+                
+                if(!$Members){
+    
+                $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+                (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+                
+                }
+                
+                elseif($Members){
+                
+                $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+                $Group = (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+                
+                    if($Group){
+    
+                    $GID = $Group.id
+    
+                    $Group.displayName
+                    write-host
+    
+                    $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)/$GID/Members"
+                    (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+    
+                    }
+    
+                }
+            
+            }
+    
+        }
+    
+        catch {
+    
+        $ex = $_.Exception
+        $errorResponse = $ex.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($errorResponse)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $responseBody = $reader.ReadToEnd();
+        Write-Host "Response content:`n$responseBody" -f Red
+        Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+        write-host
+        break
+    
+        }
+    
+    }
+    
+    ####################################################
+
 ####################################################
 
 #region Authentication
@@ -314,6 +575,22 @@ $global:authToken = Get-AuthToken -User $User
 
 ####################################################
 
+
+# Setting application AAD Group to assign Policy
+
+$AADGroup = Read-Host -Prompt "Enter the Azure AD Group name where policies will be assigned"
+
+$TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $AADGroup}).id
+
+    if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
+
+    Write-Host "AAD Group - '$AADGroup' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
+    Write-Host
+    exit
+
+    }
+
+
 #$ImportPath = Read-Host -Prompt "Please specify a path to a JSON file to import data from e.g. C:\IntuneOutput\Policies\policy.json"
 
 # Replacing quotes for Test-Path
@@ -327,6 +604,8 @@ Write-Host
 break
 
 }
+
+
 
 ####################################################
 
@@ -352,5 +631,14 @@ Foreach-object {
     Write-Host
     Write-Host "Adding App Protection Policy '$DisplayName'" -ForegroundColor Yellow
     Add-ManagedAppPolicy -JSON $JSON_Output
+
+    $APP = Get-ManagedAppPolicy -name $DisplayName
+
+    $APPID = $App.id
+
+    Write-Host "Device ConfigID '$AppID' and Target '$TargetGroupID'"
+
+    $Assign = Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $TargetGroupId -OS
+
 }
         
