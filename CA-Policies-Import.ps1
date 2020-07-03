@@ -101,7 +101,7 @@ Write-Host "Checking for AzureAD module..."
 [System.Reflection.Assembly]::LoadFrom($adalforms) | Out-Null
 
 
-$CAAppReg = get-AzureADApplication -filter "DisplayName eq 'CA Policy PowerShell Tool'"
+$CAAppReg = get-AzureADApplication -filter "DisplayName eq 'BYOD UK BP PowerShell Tool'"
 
     if ($CAAppReg -eq $null)
         { 
@@ -466,7 +466,61 @@ $Group_resource = "groups"
 }
 
 
+####################################################
+Function Get-CAPolicies()
 
+{
+
+ <#
+    .SYNOPSIS
+    This function is used to get device configuration policies from the Graph API REST interface
+    .DESCRIPTION
+    The function connects to the Graph API Interface and gets any device configuration policies
+    .EXAMPLE
+    Get-DeviceConfigurationPolicy
+    Returns any device configuration policies configured in Intune
+    .NOTES
+    NAME: Get-GroupPolicyConfigurations
+    #>
+
+    [cmdletbinding()]
+    
+    param
+    (
+        $DisplayName
+    )
+    
+
+	$graphApiVersion = "beta"
+	#$DCP_resource = "identity/conditionalAccess/policies?'$filter=displayName eq '$displayName'"
+    $DCP_resource = "identity/conditionalAccess/policies"
+    
+	try
+	{
+		
+    
+        $uri = "https://graph.microsoft.com/$graphApiVersion/$($DCP_resource)"
+	    (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value | Where-Object {($_.'displayName').contains("$DisplayName")}
+		
+	}
+	
+	catch
+	{
+		
+		$ex = $_.Exception
+		$errorResponse = $ex.Response.GetResponseStream()
+		$reader = New-Object System.IO.StreamReader($errorResponse)
+		$reader.BaseStream.Position = 0
+		$reader.DiscardBufferedData()
+		$responseBody = $reader.ReadToEnd();
+		Write-Host "Response content:`n$responseBody" -f Red
+		Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+		write-host
+		break
+		
+    }
+}
+####################################################
 
 ####################################################
 #region Authentication
@@ -532,7 +586,7 @@ $AllowTargetGroupId = (get-AADGroup -GroupName "$AADAllowGroup").id
 
 $ExcludeTargetGroupId = (get-AADGroup -GroupName "$AADExcludeGroup").id
 
-write-host $AADAllowGroup "Target Group ID = "$TargetGroupId -ForegroundColor Green
+#write-host $AADAllowGroup "Target Group ID = "$TargetGroupId -ForegroundColor Green
 
     if($AllowTargetGroupId -eq $null -or $AllowTargetGroupId -eq ""){
     
@@ -543,7 +597,7 @@ write-host $AADAllowGroup "Target Group ID = "$TargetGroupId -ForegroundColor Gr
     exit
         }
 
-write-host $AADExcludeGroup "Target Group ID = "$TargetGroupId -ForegroundColor Green
+#write-host $AADExcludeGroup "Target Group ID = "$TargetGroupId -ForegroundColor Green
 
     if($ExcludeTargetGroupId -eq $null -or $ExcludeTargetGroupId -eq ""){
     
@@ -571,7 +625,7 @@ break
 
 ####################################################
 
-# Default state value when importing Conditional Access policy (disabled/enabled)
+# Default state value when importing Conditional Access policy (disabled/enabledForReportingButNotEnforced/enabled)
 $State = "enabledForReportingButNotEnforced"
 
 
@@ -586,31 +640,32 @@ $Policies = foreach($Item in $Templates){
 
 Foreach($policy in $Policies){
 
-#$JSON_Data = Get-Content "$ImportPath"
+    #$JSON_Data = Get-Content "$ImportPath"
 
-# Excluding entries that are not required - id,createdDateTime,modifiedDateTime
-#$JSON_Convert = $JSON_Data | ConvertFrom-Json | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime
-$JSON_Convert = $Policy | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime
+    # Excluding entries that are not required - id,createdDateTime,modifiedDateTime
+    #$JSON_Convert = $JSON_Data | ConvertFrom-Json | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime
+    $JSON_Convert = $Policy | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime
+    $DuplicateCA = Get-CAPolicies -DisplayName $JSON_Convert.displayName
 
-
-# Override state value imported from JSON file for the Conditional Access policy 
-$JSON_Convert.state = $State
-
-
-# Converting users include Group Names to Group ID
- 
-
-$PermissionsincludeGroups = $JSON_Convert.conditions.users.includeGroups
-
-$AADGroupIncludeGroupsNames = @()
+    #write-host $DuplicateCA
     
-    foreach ($itemI in $PermissionsincludeGroups)
-       {
-           Write-Host "each item include " $itemI
+    If ($DuplicateCA -eq $null)
 
-           $AADGroup = (Get-AADGroup -GroupName $itemI)
+    {
+        # Override state value imported from JSON file for the Conditional Access policy 
+        $JSON_Convert.state = $State
 
-           write-host "Group ID" $AADGroup.id
+        # Converting users include Group Names to Group ID
+        $PermissionsincludeGroups = $JSON_Convert.conditions.users.includeGroups
+        $AADGroupIncludeGroupsNames = @()
+    
+            foreach ($itemI in $PermissionsincludeGroups)
+            {
+                Write-Host "CA Policy Include Group Name =  " $itemI -ForegroundColor Green
+
+                $AADGroup = (Get-AADGroup -GroupName $itemI)
+
+                write-host "CA Policy Include Group ID = " $AADGroup.id
 
            if ($AADGroup.id -eq $null)
                     {
@@ -624,22 +679,21 @@ $AADGroupIncludeGroupsNames = @()
                  }       
        }
 
-$JSON_Convert.conditions.users.includeGroups = @($AADGroupincludeGroupsNames)
-       
-
-# Converting users exclude Group Names to Group ID
+    $JSON_Convert.conditions.users.includeGroups = @($AADGroupincludeGroupsNames)
  
-$PermissionsexcludeGroups = $JSON_Convert.conditions.users.excludeGroups
+    # Converting users exclude Group Names to Group ID
+ 
+    $PermissionsexcludeGroups = $JSON_Convert.conditions.users.excludeGroups
 
-$AADGroupexcludeGroupsNames = @()
+    $AADGroupexcludeGroupsNames = @()
 		 
 		  foreach ($itemE in $PermissionsexcludeGroups)
 		    {
-				Write-Host "each item Exclude " $itemE
+				Write-Host "CA Policy Exclde Group Name =  " $itemE
 
 				$AADGroup = (Get-AADGroup -GroupName $itemE)
 
-                write-host $AADGroup.id
+                write-host "CA Policy Include Group ID = " $AADGroup.id
                 
               if ($AADGroup.id -eq $null)
                     {
@@ -651,23 +705,23 @@ $AADGroupexcludeGroupsNames = @()
                 $AADGroupexcludeGroupsNames += $AADexcludeGroupName
                     }
 			}
-$JSON_Convert.conditions.users.excludeGroups = @($AADGroupexcludeGroupsNames)
+    $JSON_Convert.conditions.users.excludeGroups = @($AADGroupexcludeGroupsNames)
 
+    $DisplayName = $JSON_Convert.displayName
 
-
-
-
-
-
-$DisplayName = $JSON_Convert.displayName
-
-$JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 5
+    $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 5
             
-write-host
-write-host "Conditional Access policy '$DisplayName' Found..." -ForegroundColor Cyan
-write-host
-$JSON_Output
-Write-Host
-Write-Host "Adding Conditional Access policy '$DisplayName' (State=$State)" -ForegroundColor Yellow
-Add-ConditionalAccessPolicy -JSON $JSON_Output
+    write-host
+    write-host "Conditional Access policy '$DisplayName' Found..." -ForegroundColor Cyan
+    write-host
+    $JSON_Output
+    Write-Host
+    Write-Host "Adding Conditional Access policy '$DisplayName' (State=$State)" -ForegroundColor Yellow
+    Add-ConditionalAccessPolicy -JSON $JSON_Output
+        }
+    
+    else 
+    {
+        write-host "Policy already Created" $JSON_Convert.displayName -ForegroundColor Yellow
+    }
 }
