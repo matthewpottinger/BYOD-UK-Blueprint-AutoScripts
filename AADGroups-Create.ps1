@@ -2,8 +2,10 @@
 
 
 ####################################################
+# Determine script location for PowerShell
+$ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 
-$GroupsJSON = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\JSON\Groups.json"
+$GroupsJSON = $ScriptDir+"\JSON\Groups\Groups.json"
 
 Function Set-AADAuth {
 <#
@@ -47,7 +49,7 @@ Write-Host "Checking for AzureAD module..."
 
 ####################################################
 
-Set-AADAuth
+#Set-AADAuth
 
 ####################################################
 
