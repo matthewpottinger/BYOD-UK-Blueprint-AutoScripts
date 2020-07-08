@@ -10,6 +10,12 @@ See LICENSE in the project root for license information.
 ####################################################
 
 
+#param
+#(
+#    [Parameter(Mandatory=$true)]
+#    [String[]]$AADGroup
+#)
+
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 $ImportPath = $ScriptDir+"\JSON\MAM"
 
@@ -419,7 +425,11 @@ $JSON = @"
         elseif($OS -eq "iOS"){
 
         $uri = "https://graph.microsoft.com/$graphApiVersion/deviceAppManagement/iosManagedAppProtections('$ID')/assign"
-        Invoke-RestMethod -Uri $uri -Method Post -ContentType "application/json" -Body $JSON -Headers $authToken
+
+        Write-Host $Uri
+
+        Write-Host $JSON
+        # Invoke-RestMethod -Uri $uri -Method Post -ContentType "application/json" -Body $JSON -Headers $authToken
 
         }
     
@@ -597,7 +607,25 @@ $global:authToken = Get-AuthToken -User $User
 # Setting application AAD Group to assign Policy
 
 # $AADGroup = Read-Host -Prompt "Enter the Azure AD Group name where policies will be assigned"
-# 
+
+#$AADGroup = "BYOD-Good-Mobile Device-Users-Enabled", "BYOD-Good-PC-Users-Enabled","Bob"
+
+ $TargetGroupsID = @()
+ foreach ($Group in $AADGroup)
+
+    {
+        $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $Group}).id
+        if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
+            
+                Write-Host "AAD Group - '$Group' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
+                Write-Host
+                exit
+            }
+        $TargetGroupsID += $TargetGroupId
+    }
+
+    Write-Host $TargetGroupsID
+
 # $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $AADGroup}).id
 #
 #    if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
@@ -640,7 +668,23 @@ Foreach-object {
 
     $DisplayName = $JSON_Convert.displayName
 
-    $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 5
+    $JSON_Convert.assignments.target | 
+    ForEach-Object {
+     
+       $GroupName = $_.GroupId
+       $AADGroup = (Get-AADGroup -GroupName $GroupName)
+
+       write-host "GroupID" $GroupName
+       write-host "GroupName" $AADGroup.Id
+       $_.GroupID = $AADGroup.Id
+    
+      }
+
+     # $JSON_Convert.assignments.target
+
+     # Write-Host $JSON_Convert
+   
+      $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 5
             
     write-host
     write-host "App Protection Policy '$DisplayName' Found..." -ForegroundColor Cyan
@@ -648,15 +692,39 @@ Foreach-object {
     $JSON_Output
     Write-Host
     Write-Host "Adding App Protection Policy '$DisplayName'" -ForegroundColor Yellow
+    
+    
+    Write-Host $JSON_Output
     Add-ManagedAppPolicy -JSON $JSON_Output
 
     #$APP = Get-ManagedAppPolicy -name $DisplayName
 
-    #$APPID = $App.id
+    # $APPID = $App.id
 
-    #Write-Host "Device ConfigID '$AppID' and Target '$TargetGroupID'"
+   
 
-    #$Assign = Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $TargetGroupId -OS
+
+      #    Write-Host "Device ConfigID '$AppID' and Target '$TargetGroupsID'"#
+#
+#    foreach ($GroupID in $TargetGroupsID)
+#        {
+#            Write-Host "Adding Target Group ID = " $GroupID
+#            Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $GroupId -OS iOS
+#        }
+#
+#    Write-Host "Target Groups ID = " $TargetGroupID
+#    $Assign = Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $TargetGroupsId -OS iOS
 
 }
-        
+
+
+#BYOD-Good-Mobile Device-Users-Enabled,BYOD-Good-PC-Users-Enabled
+
+
+# https://graph.microsoft.com/Beta/deviceAppManagement/iosManagedAppProtections/T_5e7c36a4-06dc-4ed8-8541-4e367cc21915/?$expand=assignments
+
+
+# https://graph.microsoft.com/Beta/deviceAppManagement/AndroidManagedAppProtections('T_fdfe279b-309e-4b00-a884-04d564eed55e')/assign
+
+
+# {"assignments":[{"target":{"groupId":"7389d8aa-f13d-4463-b764-afdd066e4cd7","@odata.type":"#microsoft.graph.groupAssignmentTarget"}},{"target":{"groupId":"d7b4a18a-f8b6-4cef-9e8f-6b78b4104a1b","@odata.type":"#microsoft.graph.groupAssignmentTarget"}}]}
