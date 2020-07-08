@@ -262,7 +262,7 @@ $graphApiVersion = "Beta"
     
             elseif($OS -eq "Android"){
     
-            $Resource = "deviceAppManagement/androidManagedAppProtections('$id')/?`$expand=apps"
+            $Resource = "deviceAppManagement/androidManagedAppProtections('$id')/?`$expand=apps,assignments"
     
             $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
             Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get
@@ -271,7 +271,7 @@ $graphApiVersion = "Beta"
     
             elseif($OS -eq "iOS"){
     
-            $Resource = "deviceAppManagement/iosManagedAppProtections('$id')/?`$expand=apps"
+            $Resource = "deviceAppManagement/iosManagedAppProtections('$id')/?`$expand=apps,assignments"
     
             $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
             Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get
@@ -392,6 +392,194 @@ $ExportPath
 
 }
 
+
+Function Get-AADGroup(){
+
+
+
+	<#
+	
+	.SYNOPSIS
+	
+	This function is used to get AAD Groups from the Graph API REST interface
+	
+	.DESCRIPTION
+	
+	The function connects to the Graph API Interface and gets any Groups registered with AAD
+	
+	.EXAMPLE
+	
+	Get-AADGroup
+	
+	Returns all users registered with Azure AD
+	
+	.NOTES
+	
+	NAME: Get-AADGroup
+	
+	#>
+	
+	
+	
+	[cmdletbinding()]
+	
+	
+	
+	param
+	
+	(
+	
+		$GroupName,
+	
+		$id,
+	
+		[switch]$Members
+	
+	)
+	
+	
+	
+	# Defining Variables
+	
+	$graphApiVersion = "v1.0"
+	
+	$Group_resource = "groups"
+	
+		
+	
+		try {
+	
+	
+	
+			if($id){
+	
+	
+	
+			$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=id eq '$id'"
+	
+			(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+	
+	
+			}
+	
+			
+	
+			elseif($GroupName -eq "" -or $GroupName -eq $null){
+	
+			
+	
+			$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)"
+	
+			(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+			
+	
+			}
+	
+	
+	
+			else {
+	
+				
+	
+				if(!$Members){
+	
+	
+	
+				$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+	
+				(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+				
+	
+				}
+	
+				
+	
+				elseif($Members){
+	
+				
+	
+				$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+	
+				$Group = (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+				
+	
+					if($Group){
+	
+	
+	
+					$GID = $Group.id
+	
+	
+	
+					$Group.displayName
+	
+					write-host
+	
+	
+	
+					$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)/$GID/Members"
+	
+					(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+	
+	
+					}
+	
+	
+	
+				}
+	
+			
+	
+			}
+	
+	
+	
+		}
+	
+	
+	
+		catch {
+	
+	
+	
+		$ex = $_.Exception
+	
+		$errorResponse = $ex.Response.GetResponseStream()
+	
+		$reader = New-Object System.IO.StreamReader($errorResponse)
+	
+		$reader.BaseStream.Position = 0
+	
+		$reader.DiscardBufferedData()
+	
+		$responseBody = $reader.ReadToEnd();
+	
+		Write-Host "Response content:`n$responseBody" -f Red
+	
+		Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+	
+		write-host
+	
+		break
+	
+	
+	
+		}
+	
+	
+	
+	}
+	
+	
+	
+	
+	####################################################
+
 ####################################################
 
 #region Authentication
@@ -498,6 +686,22 @@ if($ManagedAppPolicies){
 
             $AppProtectionPolicy
 
+            $AppProtectionPolicy.assignments.target | 
+
+            ForEach-Object {
+             
+               $GroupID = $_.GroupId
+
+               $AADGroup = (Get-AADGroup -id $GroupId)
+
+               write-host "GroupID" $GroupID
+               write-host "GroupName" $AADGroup.DisplayName
+               $_.GroupID = $AADGroup.DisplayName
+            
+            }
+
+            $AppProtectionPolicy.assignments.target
+
             Export-JSONData -JSON $AppProtectionPolicy -ExportPath "$ExportPath"
 
         }
@@ -508,7 +712,21 @@ if($ManagedAppPolicies){
 
             $AppProtectionPolicy | Add-Member -MemberType NoteProperty -Name '@odata.type' -Value "#microsoft.graph.iosManagedAppProtection"
 
-            $AppProtectionPolicy
+            $AppProtectionPolicy.assignments.target | 
+
+            ForEach-Object {
+             
+               $GroupID = $_.GroupId
+
+               $AADGroup = (Get-AADGroup -id $GroupId)
+
+               write-host "GroupID" $GroupID
+               write-host "GroupName" $AADGroup.DisplayName
+               $_.GroupID = $AADGroup.DisplayName
+            
+            }
+
+            $AppProtectionPolicy.assignments.target
 
             Export-JSONData -JSON $AppProtectionPolicy -ExportPath "$ExportPath"
 
