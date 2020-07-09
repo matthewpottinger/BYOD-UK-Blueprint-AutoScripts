@@ -62,7 +62,11 @@ write-host "Adding Conditional Access Policies - Report Only"
 
 . $ScriptDir/CA-Policies-Import.ps1
 
-write-host "Adding App Protection Policies - Unassigned"
+write-host "Adding App Protection Policies"
 
-. $ScriptDir/MAM-Policies-Import
+. $ScriptDir/MAM-Policies-Import.ps1
+
+write-host "Adding App Configuration Policies"
+
+. $ScriptDir/AC-Policies-Import.ps1
 
