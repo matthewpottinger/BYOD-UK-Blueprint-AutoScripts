@@ -1,0 +1,94 @@
+{
+    "apps":  [
+                 {
+                     "id":  "com.microsoft.emmx.android",
+                     "version":  "-725393251",
+                     "mobileAppIdentifier":  {
+                                                 "@odata.type":  "#microsoft.graph.androidMobileAppIdentifier",
+                                                 "packageId":  "com.microsoft.emmx"
+                                             }
+                 },
+                 {
+                     "id":  "com.microsoft.msedge.ios",
+                     "version":  "-2135752869",
+                     "mobileAppIdentifier":  {
+                                                 "@odata.type":  "#microsoft.graph.iosMobileAppIdentifier",
+                                                 "bundleId":  "com.microsoft.msedge"
+                                             }
+                 }
+             ],
+    "apps@odata.context":  "https://graph.microsoft.com/Beta/$metadata#deviceAppManagement/targetedManagedAppConfigurations(\u0027A_992771e5-9786-4d73-9038-27711aed1bc5\u0027)/apps",
+    "assignments":  [
+                        {
+                            "id":  "7389d8aa-f13d-4463-b764-afdd066e4cd7_incl",
+                            "source":  "direct",
+                            "sourceId":  "00000000-0000-0000-0000-000000000000",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Good-Mobile Device-Users-Enabled"
+                                       }
+                        },
+                        {
+                            "id":  "c3775b4f-18cd-43b3-822e-45fc8347118c_incl",
+                            "source":  "direct",
+                            "sourceId":  "00000000-0000-0000-0000-000000000000",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Better-Mobile Device-Users-Enabled"
+                                       }
+                        },
+                        {
+                            "id":  "f34a30fc-63b7-4c5a-8f01-14ae1c058611_incl",
+                            "source":  "direct",
+                            "sourceId":  "00000000-0000-0000-0000-000000000000",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Best-Mobile Device-Users-Enabled"
+                                       }
+                        }
+                    ],
+    "assignments@odata.context":  "https://graph.microsoft.com/Beta/$metadata#deviceAppManagement/targetedManagedAppConfigurations(\u0027A_992771e5-9786-4d73-9038-27711aed1bc5\u0027)/assignments",
+    "createdDateTime":  "2020-07-01T15:21:17.250134Z",
+    "customSettings":  [
+                           {
+                               "name":  "com.microsoft.intune.useEdge",
+                               "value":  "true"
+                           },
+                           {
+                               "name":  "com.microsoft.intune.mam.managedbrowser.defaultHTTPS",
+                               "value":  "true"
+                           },
+                           {
+                               "name":  "com.microsoft.intune.mam.managedbrowser.NewTabPage.BrandLogo",
+                               "value":  "true"
+                           },
+                           {
+                               "name":  "com.microsoft.intune.mam.managedbrowser.NewTabPage.BrandColor",
+                               "value":  "true"
+                           },
+                           {
+                               "name":  "com.microsoft.intune.mam.managedbrowser.AppProxyRedirection",
+                               "value":  "false"
+                           },
+                           {
+                               "name":  "com.microsoft.intune.mam.managedbrowser.AllowTransitionOnBlock",
+                               "value":  "true"
+                           }
+                       ],
+    "deployedAppCount":  2,
+    "description":  "",
+    "displayName":  "BYOD-Edge-AppConfigurationPolicy",
+    "id":  "A_992771e5-9786-4d73-9038-27711aed1bc5",
+    "isAssigned":  true,
+    "lastModifiedDateTime":  "2020-07-01T15:21:17.250134Z",
+    "roleScopeTagIds":  [
+                            "0"
+                        ],
+    "version":  "\"83753f23-62f0-41b0-b5dc-be64bf38d9e3\""
+}
