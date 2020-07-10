@@ -6,7 +6,7 @@ A large number of the scripts are based on the powershell scripts created by Dav
 
 # Script information #
 
-THe following provides details on what each script does
+The following provides details on what each script does
 
 ## BYOD-UK-BP-MasterScript.ps1 ##
 
