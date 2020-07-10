@@ -1,8 +1,8 @@
 # BYOD-UK-Blueprint-Auto
 
-This Github is for Automating the BYOD-UK-Blueprint advice provided here: https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4zeV7
+This GitHub is for Automating the BYOD-UK-Blueprint advice provided here: https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE4zeV7
 
-A large number of the scripts are based on the powershell scripts created by Dave Falkus which can be found here: https://github.com/davefalkus/powershell-intune-samples
+A large number of the scripts are based on the PowerShell scripts created by Dave Falkus which can be found here: https://github.com/davefalkus/powershell-intune-samples
 
 # Script information #
 
@@ -60,7 +60,7 @@ Imports App configuration Policies from the **JSON\ACP** Folder into tenant with
 Imports Device Enrollement Restrictions into the tenant.  Currently will be lowest priority after the Default policy
 
 
-# Implemntation Guide #
+# Implementation Guide #
 
 Work in Progress
 
