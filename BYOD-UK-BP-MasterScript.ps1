@@ -58,20 +58,29 @@ write-host "Adding App Registrtion for Conditional Access Policies"
 
 . $ScriptDir/AppRegistration-Create.ps1
 
+Start-Sleep -s 5
+
 write-host "Adding Conditional Access Policies - Report Only"
 
 . $ScriptDir/CA-Policies-Import.ps1
+
+Start-Sleep -s 5
 
 write-host "Adding App Protection Policies"
 
 . $ScriptDir/MAM-Policies-Import.ps1
 
+Start-Sleep -s 5
+
 write-host "Adding App Configuration Policies"
 
 . $ScriptDir/AC-Policies-Import.ps1
 
+Start-Sleep -s 5
+
 write-host "Adding Device Enrollement Restrictions"
 
 . $ScriptDir/DER-Import.ps1
+
 
 
