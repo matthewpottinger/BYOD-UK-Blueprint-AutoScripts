@@ -1,18 +1,18 @@
 {
     "@odata.type":  "#microsoft.graph.deviceEnrollmentPlatformRestrictionsConfiguration",
-    "id":  "f4c9dad6-3dfd-42e5-a5f0-d3290eb594e2_PlatformRestrictions",
+    "id":  "1a251c3b-662c-4647-b6dd-9e0eb22d217a_PlatformRestrictions",
     "displayName":  "BYOD-Personal Device Enrolment-Restriction",
     "description":  "",
     "priority":  1,
-    "createdDateTime":  "2020-07-01T15:38:45.8784467Z",
-    "lastModifiedDateTime":  "2020-07-07T10:18:40.4095815Z",
-    "version":  3,
+    "createdDateTime":  "2020-07-10T11:52:25.2105928Z",
+    "lastModifiedDateTime":  "2020-07-10T11:52:25.2105928Z",
+    "version":  1,
     "roleScopeTagIds":  [
                             "0"
                         ],
     "iosRestriction":  {
-                           "platformBlocked":  true,
-                           "personalDeviceEnrollmentBlocked":  false,
+                           "platformBlocked":  false,
+                           "personalDeviceEnrollmentBlocked":  true,
                            "osMinimumVersion":  null,
                            "osMaximumVersion":  null,
                            "blockedManufacturers":  [
@@ -20,8 +20,8 @@
                                                     ]
                        },
     "windowsRestriction":  {
-                               "platformBlocked":  true,
-                               "personalDeviceEnrollmentBlocked":  false,
+                               "platformBlocked":  false,
+                               "personalDeviceEnrollmentBlocked":  true,
                                "osMinimumVersion":  null,
                                "osMaximumVersion":  null,
                                "blockedManufacturers":  [
@@ -29,8 +29,8 @@
                                                         ]
                            },
     "windowsMobileRestriction":  {
-                                     "platformBlocked":  true,
-                                     "personalDeviceEnrollmentBlocked":  false,
+                                     "platformBlocked":  false,
+                                     "personalDeviceEnrollmentBlocked":  true,
                                      "osMinimumVersion":  null,
                                      "osMaximumVersion":  null,
                                      "blockedManufacturers":  [
@@ -38,8 +38,8 @@
                                                               ]
                                  },
     "androidRestriction":  {
-                               "platformBlocked":  true,
-                               "personalDeviceEnrollmentBlocked":  false,
+                               "platformBlocked":  false,
+                               "personalDeviceEnrollmentBlocked":  true,
                                "osMinimumVersion":  null,
                                "osMaximumVersion":  null,
                                "blockedManufacturers":  [
@@ -47,8 +47,8 @@
                                                         ]
                            },
     "androidForWorkRestriction":  {
-                                      "platformBlocked":  true,
-                                      "personalDeviceEnrollmentBlocked":  false,
+                                      "platformBlocked":  false,
+                                      "personalDeviceEnrollmentBlocked":  true,
                                       "osMinimumVersion":  null,
                                       "osMaximumVersion":  null,
                                       "blockedManufacturers":  [
@@ -56,8 +56,8 @@
                                                                ]
                                   },
     "macRestriction":  {
-                           "platformBlocked":  true,
-                           "personalDeviceEnrollmentBlocked":  false,
+                           "platformBlocked":  false,
+                           "personalDeviceEnrollmentBlocked":  true,
                            "osMinimumVersion":  null,
                            "osMaximumVersion":  null,
                            "blockedManufacturers":  [
@@ -65,8 +65,8 @@
                                                     ]
                        },
     "macOSRestriction":  {
-                             "platformBlocked":  true,
-                             "personalDeviceEnrollmentBlocked":  false,
+                             "platformBlocked":  false,
+                             "personalDeviceEnrollmentBlocked":  true,
                              "osMinimumVersion":  null,
                              "osMaximumVersion":  null,
                              "blockedManufacturers":  [
