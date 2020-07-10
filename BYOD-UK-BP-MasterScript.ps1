@@ -70,3 +70,8 @@ write-host "Adding App Configuration Policies"
 
 . $ScriptDir/AC-Policies-Import.ps1
 
+write-host "Adding Device Enrollement Restrictions"
+
+. $ScriptDir/DER-Import.ps1
+
+
