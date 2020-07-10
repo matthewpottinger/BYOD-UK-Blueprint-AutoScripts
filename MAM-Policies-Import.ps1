@@ -610,21 +610,21 @@ $global:authToken = Get-AuthToken -User $User
 
 #$AADGroup = "BYOD-Good-Mobile Device-Users-Enabled", "BYOD-Good-PC-Users-Enabled","Bob"
 
- $TargetGroupsID = @()
- foreach ($Group in $AADGroup)
-
-    {
-        $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $Group}).id
-        if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
-            
-                Write-Host "AAD Group - '$Group' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
-                Write-Host
-                exit
-            }
-        $TargetGroupsID += $TargetGroupId
-    }
-
-    Write-Host $TargetGroupsID
+# $TargetGroupsID = @()
+# foreach ($Group in $AADGroup)
+#
+#    {
+#        $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $Group}).id
+#        if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
+#            
+#                Write-Host "AAD Group - '$Group' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
+#                Write-Host
+#                exit
+#            }
+#        $TargetGroupsID += $TargetGroupId
+#    }
+#
+#    Write-Host $TargetGroupsID
 
 # $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $AADGroup}).id
 #
@@ -656,6 +656,7 @@ break
 ####################################################
 
 Get-ChildItem $ImportPath -filter *.json |
+
 Foreach-object {
 
     $JSON_Data = Get-Content $_.FullName
@@ -667,6 +668,8 @@ Foreach-object {
     $JSON_Convert | Add-Member -MemberType NoteProperty -Name 'apps' -Value @($JSON_Apps) -Force
 
     $DisplayName = $JSON_Convert.displayName
+
+    
 
     $JSON_Convert.assignments.target | 
     ForEach-Object {
