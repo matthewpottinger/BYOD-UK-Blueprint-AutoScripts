@@ -53,14 +53,15 @@ $svcprincipal = Get-AzureADServicePrincipal -All $true | ? { $_.DisplayName -eq 
 $reqGraph = New-Object -TypeName "Microsoft.Open.AzureAD.Model.RequiredResourceAccess"
 $reqGraph.ResourceAppId = $svcprincipal.AppId
 
-$delPermission1 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "5f8c59db-677d-491f-a6b8-5f174b11ec1d","Scope" # Group.Read.All
-$delPermission2 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "572fea84-0151-49b2-9301-11cb16974376","Scope" # Policy.Read.All
-$delPermission3 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "c79f8feb-a9db-4090-85f9-90d820caa0eb","Scope" # Application.Read.All
-$delPermission4 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "ad902697-1014-4ef5-81ef-2b4301988e8c","Scope" # Policy.ReadWrite.ConditionalAccess
-$delPermission5 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "7b3f05d5-f68c-4b8d-8c59-a2ecd12f24af","Scope" # DeviceManagementApps.ReadWrite.All
+$delPermission1 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "5f8c59db-677d-491f-a6b8-5f174b11ec1d","Scope" # Group.Read.All (Groups)
+$delPermission2 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "572fea84-0151-49b2-9301-11cb16974376","Scope" # Policy.Read.All (CA)
+$delPermission3 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "c79f8feb-a9db-4090-85f9-90d820caa0eb","Scope" # Application.Read.All (CA)
+$delPermission4 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "ad902697-1014-4ef5-81ef-2b4301988e8c","Scope" # Policy.ReadWrite.ConditionalAccess (CA)
+$delPermission5 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "7b3f05d5-f68c-4b8d-8c59-a2ecd12f24af","Scope" # DeviceManagementApps.ReadWrite.All (MAM)
+$delPermission6 = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "662ed50a-ac44-4eef-ad86-62eed9be2a29","Scope" # DeviceManagementServiceConfig.ReadWrite.All (DER)
 
 
-$reqGraph.ResourceAccess = $delPermission1, $delPermission2, $delPermission3, $delPermission4,$delPermission5
+$reqGraph.ResourceAccess = $delPermission1, $delPermission2, $delPermission3, $delPermission4,$delPermission5,$delPermission6
 
 $CAAppReg = get-AzureADApplication -filter "DisplayName eq 'BYOD UK BP PowerShell Tool'"
 
