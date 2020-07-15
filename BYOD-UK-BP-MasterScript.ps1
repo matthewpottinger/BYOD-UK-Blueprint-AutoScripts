@@ -19,7 +19,7 @@ Function Set-AADAuth {
     param
     (
         #[Parameter(Mandatory=$true)]
-        #$User
+        $User
     )
     
     Write-Host "Checking for AzureAD module..."
@@ -37,13 +37,15 @@ Function Set-AADAuth {
             #exit
         }
     
-        Connect-AzureAD
+        Connect-AzureAD -AccountId $user
     
     }
     
 ####################################################
     
-    Set-AADAuth
+    $User = Read-Host -Prompt "Please specify your user principal name for Azure Authentication"
+
+    Set-AADAuth -user $user
     
  ####################################################
     
@@ -52,7 +54,7 @@ Function Set-AADAuth {
 
 write-host "Adding required AAD Groups"
 
-. $ScriptDir/AADGroups-Create.ps1
+ . $ScriptDir/AADGroups-Create.ps1
 
 write-host "Adding App Registrtion for Conditional Access Policies"
 
@@ -62,7 +64,7 @@ Start-Sleep -s 5
 
 write-host "Adding Conditional Access Policies - Report Only"
 
-. $ScriptDir/CA-Policies-Import.ps1
+. $ScriptDir/CA-Policies-Import.ps1 -user $user
 
 Start-Sleep -s 5
 
