@@ -1,12 +1,12 @@
 {
     "@odata.type":  "#microsoft.graph.deviceEnrollmentPlatformRestrictionsConfiguration",
-    "id":  "1a251c3b-662c-4647-b6dd-9e0eb22d217a_PlatformRestrictions",
+    "id":  "fb861d37-65b9-429c-96e9-541bdccb30af_PlatformRestrictions",
     "displayName":  "BYOD-Personal Device Enrolment-Restriction",
     "description":  "",
     "priority":  1,
-    "createdDateTime":  "2020-07-10T11:52:25.2105928Z",
-    "lastModifiedDateTime":  "2020-07-10T11:52:25.2105928Z",
-    "version":  1,
+    "createdDateTime":  "2020-07-14T14:27:56.7010822Z",
+    "lastModifiedDateTime":  "2020-07-14T14:27:56.7010822Z",
+    "version":  3,
     "roleScopeTagIds":  [
                             "0"
                         ],
@@ -72,5 +72,74 @@
                              "blockedManufacturers":  [
 
                                                       ]
-                         }
+                         },
+    "assignments@odata.context":  "https://graph.microsoft.com/Beta/$metadata#deviceManagement/deviceEnrollmentConfigurations(\u0027fb861d37-65b9-429c-96e9-541bdccb30af_PlatformRestrictions\u0027)/microsoft.graph.deviceEnrollmentLimitConfiguration/microsoft.graph.deviceEnrollmentPlatformRestrictionsConfiguration/microsoft.graph.deviceEnrollmentWindowsHelloForBusinessConfiguration/microsoft.graph.windows10EnrollmentCompletionPageConfiguration/microsoft.graph.deviceEnrollmentPlatformRestrictionsConfiguration/assignments",
+    "assignments":  [
+                        {
+                            "id":  "fb861d37-65b9-429c-96e9-541bdccb30af_424a4b92-b41e-474c-8fdc-4f10fe3efd3c_fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "source":  "direct",
+                            "sourceId":  "fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Best-PC-Users-Enabled "
+                                       }
+                        },
+                        {
+                            "id":  "fb861d37-65b9-429c-96e9-541bdccb30af_6778dab4-26d9-47e0-8a80-0cd43ea9e889_fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "source":  "direct",
+                            "sourceId":  "fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Better-PC-Users-Enabled"
+                                       }
+                        },
+                        {
+                            "id":  "fb861d37-65b9-429c-96e9-541bdccb30af_69ac1fbe-bd13-4e5a-a32f-42764c9d7f86_fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "source":  "direct",
+                            "sourceId":  "fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Good-Mobile Device-Users-Enabled"
+                                       }
+                        },
+                        {
+                            "id":  "fb861d37-65b9-429c-96e9-541bdccb30af_877b776b-7da4-45b9-8c64-ed439eef70e6_fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "source":  "direct",
+                            "sourceId":  "fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Better-Mobile Device-Users-Enabled"
+                                       }
+                        },
+                        {
+                            "id":  "fb861d37-65b9-429c-96e9-541bdccb30af_b3335753-f912-473b-8e7f-781e9ba51e3b_fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "source":  "direct",
+                            "sourceId":  "fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Good-PC-Users-Enabled"
+                                       }
+                        },
+                        {
+                            "id":  "fb861d37-65b9-429c-96e9-541bdccb30af_bc25c842-2c4f-4f1c-a314-3d078d64e02b_fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "source":  "direct",
+                            "sourceId":  "fb861d37-65b9-429c-96e9-541bdccb30af",
+                            "target":  {
+                                           "@odata.type":  "#microsoft.graph.groupAssignmentTarget",
+                                           "deviceAndAppManagementAssignmentFilterId":  null,
+                                           "deviceAndAppManagementAssignmentFilterType":  "none",
+                                           "groupId":  "BYOD-Best-Mobile Device-Users-Enabled"
+                                       }
+                        }
+                    ]
 }
