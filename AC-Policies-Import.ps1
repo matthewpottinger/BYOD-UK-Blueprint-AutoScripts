@@ -630,7 +630,55 @@ Function Get-AADGroup(){
 	}
 
 ####################################################
+Function Get-ManagedAppAppConfigPolicy(){
 
+    <#
+    .SYNOPSIS
+    This function is used to get app configuration policies for managed apps from the Graph API REST interface
+    .DESCRIPTION
+    The function connects to the Graph API Interface and gets any app configuration policy for managed apps
+    .EXAMPLE
+    Get-ManagedAppAppConfigPolicy
+    Returns any app configuration policy for managed apps configured in Intune
+    .NOTES
+    NAME: Get-ManagedAppAppConfigPolicy
+    #>
+    
+    [cmdletbinding()]
+    
+    param
+    (
+        $Name
+    )
+
+    $graphApiVersion = "Beta"
+    $Resource = "deviceAppManagement/targetedManagedAppConfigurations"
+        
+       try{
+            
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value | Where-Object { ($_.'displayName').contains("$Name") }
+            
+        }
+        
+        catch {
+    
+        $ex = $_.Exception
+        $errorResponse = $ex.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($errorResponse)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $responseBody = $reader.ReadToEnd();
+        Write-Host "Response content:`n$responseBody" -f Red
+        Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+        write-host
+        break
+    
+        }
+    
+    }
+    
+    ####################################################
 
 #region Authentication
 
@@ -803,6 +851,12 @@ Else
 
     Write-Host "App Configuration JSON is for Managed Apps" -ForegroundColor Yellow
 
+    $DuplicateAC = Get-ManagedAppAppConfigPolicy -Name $JSON_Convert.displayName
+
+    #write-host $DuplicateCA
+    
+    If ($DuplicateAC -eq $null) {
+
     $JSON_Convert.assignments.target | 
     ForEach-Object {
      
@@ -822,7 +876,12 @@ Else
     $JSON_Output
     Write-Host
     Write-Host "Adding App Configuration Policy '$DisplayName'" -ForegroundColor Yellow
-    Add-ManagedAppAppConfigPolicy -JSON $JSON_Output   
+    Add-ManagedAppAppConfigPolicy -JSON $JSON_Output  
+    }
+    else 
+    {
+        write-host "Policy already Created" $JSON_Convert.displayName -ForegroundColor Yellow
+    }
 
 }
  
