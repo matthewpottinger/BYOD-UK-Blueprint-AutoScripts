@@ -170,13 +170,18 @@ NAME: Get-DeviceEnrollmentConfigurations
     
 [cmdletbinding()]
     
+param
+(
+    $Name
+)
+    
 $graphApiVersion = "Beta"
 $Resource = "deviceManagement/deviceEnrollmentConfigurations"
         
     try {
             
     $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
-    (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+    (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value | Where-Object { ($_.'displayName').contains("$Name") }
     
     }
         
@@ -262,7 +267,188 @@ break
 }
 
 ####################################################
+Function Get-AADGroup(){
 
+
+
+	<#
+	
+	.SYNOPSIS
+	
+	This function is used to get AAD Groups from the Graph API REST interface
+	
+	.DESCRIPTION
+	
+	The function connects to the Graph API Interface and gets any Groups registered with AAD
+	
+	.EXAMPLE
+	
+	Get-AADGroup
+	
+	Returns all users registered with Azure AD
+	
+	.NOTES
+	
+	NAME: Get-AADGroup
+	
+	#>
+	
+	
+	
+	[cmdletbinding()]
+	
+	
+	
+	param
+	
+	(
+	
+		$GroupName,
+	
+		$id,
+	
+		[switch]$Members
+	
+	)
+	
+	
+	
+	# Defining Variables
+	
+	$graphApiVersion = "v1.0"
+	
+	$Group_resource = "groups"
+	
+		
+	
+		try {
+	
+	
+	
+			if($id){
+	
+	
+	
+			$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=id eq '$id'"
+	
+			(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+	
+	
+			}
+	
+			
+	
+			elseif($GroupName -eq "" -or $GroupName -eq $null){
+	
+			
+	
+			$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)"
+	
+			(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+			
+	
+			}
+	
+	
+	
+			else {
+	
+				
+	
+				if(!$Members){
+	
+	
+	
+				$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+	
+				(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+				
+	
+				}
+	
+				
+	
+				elseif($Members){
+	
+				
+	
+				$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+	
+				$Group = (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+				
+	
+					if($Group){
+	
+	
+	
+					$GID = $Group.id
+	
+	
+	
+					$Group.displayName
+	
+					write-host
+	
+	
+	
+					$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)/$GID/Members"
+	
+					(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+	
+	
+	
+					}
+	
+	
+	
+				}
+	
+			
+	
+			}
+	
+	
+	
+		}
+	
+	
+	
+		catch {
+	
+	
+	
+		$ex = $_.Exception
+	
+		$errorResponse = $ex.Response.GetResponseStream()
+	
+		$reader = New-Object System.IO.StreamReader($errorResponse)
+	
+		$reader.BaseStream.Position = 0
+	
+		$reader.DiscardBufferedData()
+	
+		$responseBody = $reader.ReadToEnd();
+	
+		Write-Host "Response content:`n$responseBody" -f Red
+	
+		Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+	
+		write-host
+	
+		break
+	
+	
+	
+		}
+	
+	
+	
+	}
+	
 ####################################################
 
 Function Test-JSON(){
@@ -309,6 +495,7 @@ $JSON
 }
 
 ####################################################
+
 
 #region Authentication
 
@@ -397,11 +584,35 @@ Foreach($DER in $DERS){
     #$JSON_Convert = $JSON_Data | ConvertFrom-Json | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime
     $JSON_Convert = $DER | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime,priority
 
-    $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 5
+    $DuplicateDER = Get-DeviceEnrollmentConfigurations -Name $JSON_Convert.displayName
+
+    #write-host $DuplicateCA
+    
+    If ($DuplicateDER -eq $null) {
+
+    $JSON_Convert.assignments.target | 
+    ForEach-Object {
+     
+       $GroupName = $_.GroupId
+       $AADGroup = (Get-AADGroup -GroupName $GroupName)
+
+       write-host "GroupID" $GroupName
+       write-host "GroupName" $AADGroup.Id
+       $_.GroupID = $AADGroup.Id
+    
+      }
+
+    $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 10
 
     Write-Host $JSON_Output
 
     Set-DeviceEnrollmentConfiguration -JSON $JSON_Output
 
+    }
+
+    else 
+    {
+        write-host "Policy already Created" $JSON_Convert.displayName -ForegroundColor Yellow
+    }
 }
 
