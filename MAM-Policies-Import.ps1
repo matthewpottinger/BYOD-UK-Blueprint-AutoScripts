@@ -453,6 +453,66 @@ $JSON = @"
 }
 
 ####################################################
+Function Get-ManagedAppPolicy(){
+
+    <#
+    .SYNOPSIS
+    This function is used to get managed app policies from the Graph API REST interface
+    .DESCRIPTION
+    The function connects to the Graph API Interface and gets any managed app policies
+    .EXAMPLE
+    Get-ManagedAppPolicy
+    Returns any managed app policies configured in Intune
+    .NOTES
+    NAME: Get-ManagedAppPolicy
+    #>
+    
+    [cmdletbinding()]
+    
+    param
+    (
+        $Name
+    )
+    
+    $graphApiVersion = "Beta"
+    $Resource = "deviceAppManagement/managedAppPolicies"
+    
+        try {
+        
+            if($Name){
+        
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value | Where-Object { ($_.'displayName').contains("$Name") }
+        
+            }
+        
+            else {
+        
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value | Where-Object { ($_.'@odata.type').contains("ManagedAppProtection") -or ($_.'@odata.type').contains("InformationProtectionPolicy") }
+        
+            }
+        
+        }
+        
+        catch {
+        
+        $ex = $_.Exception
+        $errorResponse = $ex.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($errorResponse)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $responseBody = $reader.ReadToEnd();
+        Write-Host "Response content:`n$responseBody" -f Red
+        Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+        write-host
+        break
+        
+        }
+        
+    }
+    
+
 ####################################################
 
 Function Get-AADGroup(){
@@ -603,40 +663,6 @@ $global:authToken = Get-AuthToken -User $User
 
 ####################################################
 
-
-# Setting application AAD Group to assign Policy
-
-# $AADGroup = Read-Host -Prompt "Enter the Azure AD Group name where policies will be assigned"
-
-#$AADGroup = "BYOD-Good-Mobile Device-Users-Enabled", "BYOD-Good-PC-Users-Enabled","Bob"
-
-# $TargetGroupsID = @()
-# foreach ($Group in $AADGroup)
-#
-#    {
-#        $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $Group}).id
-#        if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
-#            
-#                Write-Host "AAD Group - '$Group' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
-#                Write-Host
-#                exit
-#            }
-#        $TargetGroupsID += $TargetGroupId
-#    }
-#
-#    Write-Host $TargetGroupsID
-
-# $TargetGroupId = (Get-AADGroup | Where-Object {$_.displayName -eq $AADGroup}).id
-#
-#    if($TargetGroupId -eq $null -or $TargetGroupId -eq ""){
-#
-#    Write-Host "AAD Group - '$AADGroup' doesn't exist, please specify a valid AAD Group..." -ForegroundColor Red
-#    Write-Host
-#    exit
-
-#    }
-
-
 #$ImportPath = Read-Host -Prompt "Please specify a path to a JSON file to import data from e.g. C:\IntuneOutput\Policies\policy.json"
 
 # Replacing quotes for Test-Path
@@ -663,6 +689,12 @@ Foreach-object {
     # Excluding entries that are not required - id,createdDateTime,lastModifiedDateTime,version
     $JSON_Convert = $JSON_Data | ConvertFrom-Json | Select-Object -Property * -ExcludeProperty id,createdDateTime,lastModifiedDateTime,version,"@odata.context",apps@odata.context,deployedAppCount
 
+    $DuplicateMAM = Get-ManagedAppPolicy -Name $JSON_Convert.displayName
+
+    #write-host $DuplicateCA
+    
+    If ($DuplicateMAM -eq $null) {
+
     $JSON_Apps = $JSON_Convert.apps | select * -ExcludeProperty id,version
 
     $JSON_Convert | Add-Member -MemberType NoteProperty -Name 'apps' -Value @($JSON_Apps) -Force
@@ -683,10 +715,7 @@ Foreach-object {
     
       }
 
-     # $JSON_Convert.assignments.target
-
-     # Write-Host $JSON_Convert
-   
+     
       $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 5
             
     write-host
@@ -700,34 +729,10 @@ Foreach-object {
     Write-Host $JSON_Output
     Add-ManagedAppPolicy -JSON $JSON_Output
 
-    #$APP = Get-ManagedAppPolicy -name $DisplayName
+ }
 
-    # $APPID = $App.id
-
-   
-
-
-      #    Write-Host "Device ConfigID '$AppID' and Target '$TargetGroupsID'"#
-#
-#    foreach ($GroupID in $TargetGroupsID)
-#        {
-#            Write-Host "Adding Target Group ID = " $GroupID
-#            Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $GroupId -OS iOS
-#        }
-#
-#    Write-Host "Target Groups ID = " $TargetGroupID
-#    $Assign = Assign-ManagedAppPolicy -Id $AppID -TargetGroupId $TargetGroupsId -OS iOS
-
+ else 
+    {
+        write-host "Policy already Created" $JSON_Convert.displayName -ForegroundColor Yellow
+    }
 }
-
-
-#BYOD-Good-Mobile Device-Users-Enabled,BYOD-Good-PC-Users-Enabled
-
-
-# https://graph.microsoft.com/Beta/deviceAppManagement/iosManagedAppProtections/T_5e7c36a4-06dc-4ed8-8541-4e367cc21915/?$expand=assignments
-
-
-# https://graph.microsoft.com/Beta/deviceAppManagement/AndroidManagedAppProtections('T_fdfe279b-309e-4b00-a884-04d564eed55e')/assign
-
-
-# {"assignments":[{"target":{"groupId":"7389d8aa-f13d-4463-b764-afdd066e4cd7","@odata.type":"#microsoft.graph.groupAssignmentTarget"}},{"target":{"groupId":"d7b4a18a-f8b6-4cef-9e8f-6b78b4104a1b","@odata.type":"#microsoft.graph.groupAssignmentTarget"}}]}
