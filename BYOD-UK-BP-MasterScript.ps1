@@ -37,7 +37,7 @@ Function Set-AADAuth {
             #exit
         }
     
-        Connect-AzureAD -AccountId $user
+        Connect-AzureAD -AccountId $user | Out-Null
     
     }
     
