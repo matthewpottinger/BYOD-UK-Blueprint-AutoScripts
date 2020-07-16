@@ -64,7 +64,16 @@ Start-Sleep -s 5
 
 write-host "Adding Conditional Access Policies - Report Only"
 
-. $ScriptDir/CA-Policies-Import.ps1 -user $user
+. $ScriptDir/CA-Policies-Import.ps1 -user $user -folder "CA JSON"
+
+$msg = 'Do you have WVD enabled [Y/N]'
+     $response = Read-Host -Prompt $msg
+    if ($response -eq 'y') {
+        . $ScriptDir/CA-Policies-Import.ps1 -user $user -folder "CA WVD JSON"
+    }
+    else {
+        write-host "The script will continue without the WVD Conditional Access Policies. Please re-run the script once WVD is enabled to apply the WVD Conditional Access Policies." -ForegroundColor red
+    }
 
 Start-Sleep -s 5
 

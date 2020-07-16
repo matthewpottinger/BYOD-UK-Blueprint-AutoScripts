@@ -7,6 +7,14 @@ Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT
 See LICENSE in the project root for license information.
 #>
 
+
+param (
+    
+    $folder
+    
+    )
+
+
 ####################################################
 
 #$ImportPath = Read-Host -Prompt "Please specify a path to a JSON file to import data from e.g. C:\IntuneOutput\Policies\policy.json"
@@ -14,7 +22,7 @@ See LICENSE in the project root for license information.
 #$ImportPath = "C:\Users\mapottin\Documents\GitHub\BYOD-UK-Blueprint-Auto\JSON\CA JSON"
 
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
-$ImportPath = $ScriptDir+"\JSON\CA JSON"
+$ImportPath = $ScriptDir+"\JSON\$folder"
 
 #$AADAllowGroup = "PAW-Mgmt-Accounts"
 
