@@ -28,15 +28,6 @@
 
                                                         ]
                            },
-    "windowsMobileRestriction":  {
-                                     "platformBlocked":  false,
-                                     "personalDeviceEnrollmentBlocked":  true,
-                                     "osMinimumVersion":  null,
-                                     "osMaximumVersion":  null,
-                                     "blockedManufacturers":  [
-
-                                                              ]
-                                 },
     "androidRestriction":  {
                                "platformBlocked":  false,
                                "personalDeviceEnrollmentBlocked":  true,
