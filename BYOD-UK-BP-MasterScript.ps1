@@ -60,7 +60,7 @@ write-host "Adding App Registrtion for Conditional Access Policies"
 
 . $ScriptDir/AppRegistration-Create.ps1
 
-Start-Sleep -s 5
+Start-Sleep -s 15
 
 write-host "Adding Conditional Access Policies - Report Only"
 

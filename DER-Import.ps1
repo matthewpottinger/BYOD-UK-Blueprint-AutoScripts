@@ -223,7 +223,6 @@ NAME: Set-DeviceEnrollmentConfiguration
 param
 (
     $JSON
-   # $DEC_Id
 )
     
 $graphApiVersion = "Beta"
@@ -233,7 +232,7 @@ try {
 
     if($JSON -eq "" -or $JSON -eq $null){
 
-    write-host "No JSON specified, please specify valid JSON for a Conditional Access policy..." -f Red
+    write-host "No JSON specified, please specify valid JSON for a Device Enrollment Restriction..." -f Red
 
     }
 
@@ -268,187 +267,102 @@ break
 
 ####################################################
 Function Get-AADGroup(){
+    <#
+.SYNOPSIS
+This function is used to get AAD Groups from the Graph API REST interface
+.DESCRIPTION
+The function connects to the Graph API Interface and gets any Groups registered with AAD
+.EXAMPLE
+Get-AADGroup
+Returns all users registered with Azure AD
+.NOTES
+NAME: Get-AADGroup
+#>
 
+[cmdletbinding()]
 
+param
+(
+    $GroupName,
+    $id,
+    [switch]$Members
+)
 
-	<#
-	
-	.SYNOPSIS
-	
-	This function is used to get AAD Groups from the Graph API REST interface
-	
-	.DESCRIPTION
-	
-	The function connects to the Graph API Interface and gets any Groups registered with AAD
-	
-	.EXAMPLE
-	
-	Get-AADGroup
-	
-	Returns all users registered with Azure AD
-	
-	.NOTES
-	
-	NAME: Get-AADGroup
-	
-	#>
-	
-	
-	
-	[cmdletbinding()]
-	
-	
-	
-	param
-	
-	(
-	
-		$GroupName,
-	
-		$id,
-	
-		[switch]$Members
-	
-	)
-	
-	
-	
-	# Defining Variables
-	
-	$graphApiVersion = "v1.0"
-	
-	$Group_resource = "groups"
-	
-		
-	
-		try {
-	
-	
-	
-			if($id){
-	
-	
-	
-			$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=id eq '$id'"
-	
-			(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
-	
-	
-	
-			}
-	
-			
-	
-			elseif($GroupName -eq "" -or $GroupName -eq $null){
-	
-			
-	
-			$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)"
-	
-			(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
-	
-			
-	
-			}
-	
-	
-	
-			else {
-	
-				
-	
-				if(!$Members){
-	
-	
-	
-				$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
-	
-				(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
-	
-				
-	
-				}
-	
-				
-	
-				elseif($Members){
-	
-				
-	
-				$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
-	
-				$Group = (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
-	
-				
-	
-					if($Group){
-	
-	
-	
-					$GID = $Group.id
-	
-	
-	
-					$Group.displayName
-	
-					write-host
-	
-	
-	
-					$uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)/$GID/Members"
-	
-					(Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
-	
-	
-	
-					}
-	
-	
-	
-				}
-	
-			
-	
-			}
-	
-	
-	
-		}
-	
-	
-	
-		catch {
-	
-	
-	
-		$ex = $_.Exception
-	
-		$errorResponse = $ex.Response.GetResponseStream()
-	
-		$reader = New-Object System.IO.StreamReader($errorResponse)
-	
-		$reader.BaseStream.Position = 0
-	
-		$reader.DiscardBufferedData()
-	
-		$responseBody = $reader.ReadToEnd();
-	
-		Write-Host "Response content:`n$responseBody" -f Red
-	
-		Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
-	
-		write-host
-	
-		break
-	
-	
-	
-		}
-	
-	
-	
-	}
-	
+# Defining Variables
+$graphApiVersion = "v1.0"
+$Group_resource = "groups"
+# pseudo-group identifiers for all users and all devices
+[string]$AllUsers   = "acacacac-9df4-4c7d-9d50-4ef0226f57a9"
+[string]$AllDevices = "adadadad-808e-44e2-905a-0b7873a8a531"
+
+    try {
+
+        if($id){
+
+        $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=id eq '$id'"
+        switch ( $id ) {
+                $AllUsers   { $grp = [PSCustomObject]@{ displayName = "All users"}; $grp           }
+                $AllDevices { $grp = [PSCustomObject]@{ displayName = "All devices"}; $grp         }
+                default     { (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value  }
+                }
+                
+        }
+
+        elseif($GroupName -eq "" -or $GroupName -eq $null){
+
+        $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)"
+        (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+
+        }
+
+        else {
+
+            if(!$Members){
+
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+            (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+
+            }
+
+            elseif($Members){
+
+            $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)?`$filter=displayname eq '$GroupName'"
+            $Group = (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+
+                if($Group){
+
+                $GID = $Group.id
+
+                $Group.displayName
+                write-host
+
+                $uri = "https://graph.microsoft.com/$graphApiVersion/$($Group_resource)/$GID/Members"
+                (Invoke-RestMethod -Uri $uri -Headers $authToken -Method Get).Value
+
+                }
+
+            }
+
+        }
+
+    }
+
+    catch {
+
+    $ex = $_.Exception
+    $errorResponse = $ex.Response.GetResponseStream()
+    $reader = New-Object System.IO.StreamReader($errorResponse)
+    $reader.BaseStream.Position = 0
+    $reader.DiscardBufferedData()
+    $responseBody = $reader.ReadToEnd();
+    Write-Host "Response content:`n$responseBody" -f Red
+    Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+    write-host
+    break
+
+    }
+
+}
 ####################################################
 
 Function Test-JSON(){
@@ -496,6 +410,84 @@ $JSON
 
 ####################################################
 
+Function Add-DERAssignment(){
+
+<#
+.SYNOPSIS
+This function is used to add a Device Enrollment Restriction assignment using the Graph API REST interface
+.DESCRIPTION
+The function connects to the Graph API Interface and assigns a group to a Device Enrollment Restriction
+.EXAMPLE
+Add-DERAssignment -DERId $DERId -EnrollmentConfigurationAssignments $EnrollmentConfigurationAssignments
+
+.NOTES
+NAME: Add-DERAssignment
+#>
+
+[cmdletbinding()]
+
+param
+(
+    $DERId,
+    $EnrollmentConfigurationAssignments
+)
+
+$graphApiVersion = "Beta"
+$Resource = "deviceManagement/deviceEnrollmentConfigurations/$DERId/assign"
+    
+    try {
+
+        if(!$DERId){
+
+        write-host "No Device Enrollment Restriction Id specified, specify a valid Id" -f Red
+        break
+
+        }
+
+        if(!$enrollmentConfigurationAssignments){
+
+        write-host "No Target Group Id specified, specify a valid Target Group Id" -f Red
+        break
+        
+        }
+     
+        
+            $JSON = @"
+
+{
+    "enrollmentConfigurationAssignments": [
+        $enrollmentConfigurationAssignments
+    ]
+}
+"@
+        
+
+    Write-Output $JSON
+
+
+    $uri = "https://graph.microsoft.com/$graphApiVersion/$($Resource)"
+    Invoke-RestMethod -Uri $uri -Headers $authToken -Method Post -Body $JSON -ContentType "application/json"
+
+    }
+    
+    catch {
+
+    $ex = $_.Exception
+    $errorResponse = $ex.Response.GetResponseStream()
+    $reader = New-Object System.IO.StreamReader($errorResponse)
+    $reader.BaseStream.Position = 0
+    $reader.DiscardBufferedData()
+    $responseBody = $reader.ReadToEnd();
+    Write-Host "Response content:`n$responseBody" -f Red
+    Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+    write-host
+    break
+
+    }
+
+}
+
+####################################################
 
 #region Authentication
 
@@ -567,8 +559,6 @@ break
 Write-Host "Importing Device Enrollment Restrictions" -ForegroundColor Green
 $Templates = Get-ChildItem -Path $ImportPath
 
-Write-Host $Templates
-
 $DERS = foreach($Item in $Templates){
     $DER = Get-Content -Raw -Path $Item.FullName | ConvertFrom-Json
     $DER
@@ -578,10 +568,6 @@ $DERS = foreach($Item in $Templates){
 
 Foreach($DER in $DERS){
 
-    #$JSON_Data = Get-Content "$ImportPath"
-
-    # Excluding entries that are not required - id,createdDateTime,modifiedDateTime
-    #$JSON_Convert = $JSON_Data | ConvertFrom-Json | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime
     $JSON_Convert = $DER | Select-Object -Property * -ExcludeProperty id,createdDateTime,modifiedDateTime,priority
 
     $DuplicateDER = Get-DeviceEnrollmentConfigurations -Name $JSON_Convert.displayName
@@ -590,29 +576,54 @@ Foreach($DER in $DERS){
     
     If ($DuplicateDER -eq $null) {
 
-    $JSON_Convert.assignments.target | 
-    ForEach-Object {
-     
-       $GroupName = $_.GroupId
-       $AADGroup = (Get-AADGroup -GroupName $GroupName)
+        $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 10
 
-       write-host "GroupID" $GroupName
-       write-host "GroupName" $AADGroup.Id
-       $_.GroupID = $AADGroup.Id
-    
-      }
+        #Write-Host $JSON_Output
+        Write-Host
+        Write-Host "Adding Device Enrollment Restriction:" $JSON_Convert.displayName -ForegroundColor Yellow
+        Set-DeviceEnrollmentConfiguration -JSON $JSON_Output
 
-    $JSON_Output = $JSON_Convert | ConvertTo-Json -Depth 10
+        $DER = Get-DeviceEnrollmentConfigurations -name $JSON_Convert.displayName
 
-    Write-Host $JSON_Output
+        $DERId = $DER.id
 
-    Set-DeviceEnrollmentConfiguration -JSON $JSON_Output
+        
+        Write-Host "Device Enrollment Restriction ID:" $DERId -ForegroundColor Yellow
+        Write-Host
+        $AADGroups = $JSON_Convert.assignments.target
 
+        $enrollmentConfigurationAssignments = @()
+
+        foreach ($AADGroup in $AADGroups ) 
+                    
+            {
+                Write-Host "AAD Group Name:" $AADGroup.groupId -ForegroundColor Yellow
+                Write-Host "Assignment Type:" $AADGroup."@OData.type" -ForegroundColor Yellow
+                $TargetGroupId = (Get-AADGroup -GroupName $AADGroup.groupid)
+                $TargetGroupId = $TargetGroupId.id
+                Write-Host "Included Group ID:" $TargetGroupID -ForegroundColor Yellow
+ 
+                $Assignment = $AADGroup."@OData.type"                           
+                $GroupAdd = @"
+     {
+            "target": {
+            "@odata.type": "#microsoft.graph.$Assignment",
+            "groupId": "$TargetGroupId"
+                        }
+       },
+
+"@
+                
+                $enrollmentConfigurationAssignments += $GroupAdd
+            }
+
+        Add-DERAssignment -enrollmentConfigurationAssignments $enrollmentConfigurationAssignments -DERId $DERId
     }
 
     else 
     {
-        write-host "Policy already Created" $JSON_Convert.displayName -ForegroundColor Yellow
+        write-host "Device Enrollment Restrictions already created:" $JSON_Convert.displayName -ForegroundColor Yellow
     }
 }
+
 
