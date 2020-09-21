@@ -4,8 +4,6 @@ This GitHub is for Automating the BYOD-UK-Blueprint advice provided here: https:
 
 A large number of the scripts are based on the PowerShell scripts created by Dave Falkus which can be found here: https://github.com/davefalkus/powershell-intune-samples
 
-***Please note this code is still under development and is not in its final state***
-
 # Script information #
 
 The following provides details on what each script does
